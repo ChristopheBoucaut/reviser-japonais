@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Réviser le vocabulaire</title>
+        <style media="screen">
+            #groups a {
+                text-decoration: underline;
+                cursor: pointer;
+                margin-right: 7px;
+            }
+
+            #table {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                border: 1px solid #000;
+            }
+
+            #table > div {
+                padding: 5px;
+                border: 1px solid black;
+            }
+
+            #table > div[contenteditable] {
+                background-color: #C3C3FF;
+            }
+
+            #table > div[contenteditable].error {
+                background-color: #FF8080;
+            }
+            #table > div[contenteditable].success {
+                background-color: #94CA94;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="index.html">&lt; Retour</a> <h1>Réviser le vocabulaire</h1>
+        <p id="groups">Listes : <a onclick="show('all')">Tous</a></p>
+
+        <p>
+            <button onclick="correct()">Corriger</button>
+            <button onclick="resolve()">Voir réponses</button>
+        </p>
+
+        <div id="table"></div>
+
+        <script type="text/javascript">
+            var wordsGroup = {
+                "Premiers mots en kanji": [
+                    ["男", "おとこ", "L'homme"],
+                    ["女", "おんな", "La femme"],
+                    ["子", "こ", "L'enfant"],
+                    ["日", "ひ", "Le soleil"],
+                    ["月", "つき", "La lune"],
+                    ["時", "とき", "Le temps"],
+                    ["水", "みず", "L'eau"],
+                    ["火", "ひ", "Le feu"],
+                    ["土", "つち", "La terre"],
+                    ["風", "かぜ", "Le vent"],
+                    ["空", "そら", "Le ciel"],
+                    ["山", "やま", "La montagne"],
+                    ["川", "かわ", "La rivière"],
+                    ["木", "き", "L'arbre"],
+                    ["花", "はな", "La fleur"],
+                    ["雨", "あめ", "La pluie"],
+                    ["雪", "ゆき", "La neige"],
+                    ["金", "かね", "Le fric"],
+                    ["刀", "かたな", "Le sabre"],
+                ],
+                "Formule de politesse": [
+                    ["はい", "はい", "oui"],
+                    ["いいえ", "いいえ", "non"],
+                    ["お願いします", "おねがいします", "S’il vous plait"],
+                    ["ありがとうございます", "ありがとうございます", "merci"],
+                    ["どういたしまして", "どういたしまして", "Il n’y a pas de quoi"],
+                    ["おはようございます", "おはようございます", "Bonjour le matin"],
+                    ["こんにちは", "こんにちは", "Bonjour"],
+                    ["こんばんは", "こんばんは", "Bonsoir"],
+                    ["お元気ですか", "おゲンキですか", "Comment vas-tu ?"],
+                    ["はい、元気です", "はい、ゲンキです", "Je vais bien"],
+                    ["またね", "またね", "aurevoir"],
+                    ["さようなら", "さようなら", "adieu"],
+                    ["おやすみなさい", "おやすみなさい", "bonne nuit"],
+                    ["また明日", "またあした", "à demain"],
+                    ["初めまして", "はじめまして", "Enchanté"],
+                    ["どうぞ宜しくお願いします", "どうぞよろしくおねがいします", "Enchanté formel"],
+                    ["どうぞ", "どうぞ", "Je vous en prie"],
+                    ["いただきます", "いただきます", "Bon appétit"],
+                    ["すみません", "すみません", "Excusez-moi"],
+                    ["ごめんなさい", "ごめんなさい", "Pardonnez-moi"],
+                    ["お疲れ様でした", "おつかれさまでした", "Bon travail"],
+                    ["いってきます", "いってきます", "J’y vais"],
+                    ["いってらっしゃい", "いってらっしゃい", "Bonne journée"],
+                    ["ただいま", "ただいま", "Je suis rentré"],
+                    ["おかえりなさい", "おかえりなさい", "Bon retour"],
+                    ["いらっしゃいませ", "いらっしゃいませ", "Bienvenu (magasin)"],
+                    ["ようこそ", "ようこそ", "Bienvenu"],
+                    ["お邪魔します", "おジャマします", "Je rentre"],
+                ],
+            };
+
+            var tableEl = document.getElementById('table');
+            var groupsEl = document.getElementById('groups');
+            for (var groupName in wordsGroup) {
+                groupsEl.innerHTML += '<a onclick="show(\''+groupName+'\')">'+groupName+'</a>';
+            }
+
+            function show(groupNameShown) {
+                clear();
+
+                var words = [];
+                if (groupNameShown == 'all') {
+                    for (var groupName in wordsGroup) {
+                        for (var i = 0; i < wordsGroup[groupName].length; i++) {
+                            words.push(wordsGroup[groupName][i]);
+                        }
+                    }
+                } else {
+                    for (var i = 0; i < wordsGroup[groupNameShown].length; i++) {
+                        words.push(wordsGroup[groupNameShown][i]);
+                    }
+                }
+                words = shuffle(words);
+
+                for (var i = 0; i < words.length; i++) {
+                    var displayedPosition = Math.floor(Math.random() * Math.floor(words[i].length));
+                    for (var j = 0; j < words[i].length; j++) {
+                        var lineEl = '<div data-answer="'+words[i][j]+'"';
+                        if (j == displayedPosition) {
+                            lineEl += '>'+words[i][j];
+                        } else {
+                            lineEl += ' contenteditable="true">';
+                        }
+                        lineEl += '</div>';
+                        tableEl.innerHTML += lineEl;
+                    }
+                }
+            }
+
+            function correct() {
+                var lines = tableEl.getElementsByTagName('div');
+                var errors = 0;
+                for (var i = 0; i < lines.length; i++) {
+                    var classCorrect = 'success';
+                    if (lines[i].dataset.answer.toLowerCase() != lines[i].textContent.toLowerCase()) {
+                        classCorrect = 'error';
+                        errors++;
+                    }
+                    lines[i].classList.add(classCorrect);
+                }
+
+                if (errors) {
+                    alert(errors+" erreurs !");
+                } else {
+                    alert("Tout bon O_o");
+                }
+            }
+
+            function resolve() {
+                var lines = tableEl.getElementsByTagName('div');
+                for (var i = 0; i < lines.length; i++) {
+                    lines[i].textContent = lines[i].dataset.answer;
+                }
+            }
+
+            function clear() {
+                tableEl.innerHTML = '';
+            }
+
+            function shuffle(arr) {
+                // Source de la méthode : https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+                var currentIndex = arr.length, temporaryValue, randomIndex;
+
+                while (0 !== currentIndex) {
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+
+                    temporaryValue = arr[currentIndex];
+                    arr[currentIndex] = arr[randomIndex];
+                    arr[randomIndex] = temporaryValue;
+                }
+
+                return arr;
+            }
+        </script>
+    </body>
+</html>
