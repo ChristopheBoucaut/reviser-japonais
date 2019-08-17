@@ -148,7 +148,7 @@
                 for (var i = 0; i < words.length; i++) {
                     var displayedPosition = Math.floor(Math.random() * Math.floor(words[i].length));
                     for (var j = 0; j < words[i].length; j++) {
-                        var lineEl = '<div data-answer="'+words[i][j]+'"';
+                        var lineEl = '<div data-answer="'+words[i][j]+'" data-lang="'+(j == 2 ? 'fr' : 'jp')+'"';
                         if (j == displayedPosition) {
                             lineEl += '>'+words[i][j];
                         } else {
@@ -164,11 +164,35 @@
                 var lines = tableEl.getElementsByTagName('div');
                 var errors = 0;
                 for (var i = 0; i < lines.length; i++) {
+                    lines[i].classList.remove('success');
+                    lines[i].classList.remove('error');
+
                     var classCorrect = 'success';
-                    if (lines[i].dataset.answer.toLowerCase() != lines[i].textContent.toLowerCase()) {
+                    var lang = lines[i].dataset.lang;
+                    var answer = lines[i].dataset.answer;
+                    var response = lines[i].textContent;
+
+                    var isGood;
+                    if (lang == 'jp') {
+                        isGood = answer == response;
+                    } else {
+                        answerParts = answer.split(' ');
+                        responseParts = response.split(' ');
+
+                        // Pour gérer "le", "la".
+                        if (answerParts.length == 2 && answerParts[0].length == 2 && responseParts.length == 1) {
+                            answer = answerParts[1];
+                        }
+
+                        isGood = answer.localeCompare(response, 'fr', {sensitivity: 'base', ignorePunctuation: true});
+                        isGood = isGood == 0;
+                    }
+
+                    if (!isGood) {
                         classCorrect = 'error';
                         errors++;
                     }
+
                     lines[i].classList.add(classCorrect);
                 }
 
