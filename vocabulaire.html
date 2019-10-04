@@ -31,6 +31,27 @@
             #table > div[contenteditable].success {
                 background-color: #94CA94;
             }
+
+            #game > div {
+                display: inline-block;
+                margin: 4px;
+                border: 1px solid black;
+                padding: 4px;
+            }
+
+            #game > div:not(.good) {
+                cursor: pointer;
+            }
+
+            #game > div.selected {
+                color: white;
+                background: blue;
+            }
+
+            #game > div.good {
+                color: white;
+                background: green;
+            }
         </style>
     </head>
     <body>
@@ -43,6 +64,20 @@
         </p>
 
         <div id="table"></div>
+
+        <h2>Mode "jeu"</h2>
+
+        <form id="game-config">
+            <select name="nb">
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="all">Tous</option>
+            </select>
+            <input type="submit" value="GO !" />
+        </form>
+        <div id="game"></div>
 
         <script type="text/javascript">
             var wordsGroup = {
@@ -128,12 +163,284 @@
                     ["韓国", "カンコク", "Corée du sud"],
                     ["日本", "ニホン", "Japon"],
                 ],
+                "Les animaux domestiques": [
+                    ["犬", "いぬ", "Le chien"],
+                    ["猫", "ねこ", "Le chat"],
+                    ["鳥", "とり", "L’oiseau"],
+                    ["魚", "さかな", "Le poisson"],
+                    ["狸", "たぬき", "Le tanuki"],
+                    ["兎", "うさぎ", "Le lapin"],
+                    ["牛", "うし", "La vache"],
+                    ["羊", "ひつじ", "Le mouton"],
+                    ["山羊", "やぎ", "La chèvre"],
+                    ["豚", "ぶた", "Le cochon"],
+                    ["馬", "うま", "Le cheval"],
+                    ["鹿", "しか", "Le cerf"],
+                    ["ロバ", "ロバ", "L’âne"],
+                    ["ラクダ", "ラクダ", "Le dromadaire",],
+                    ["鶏", "にわとり", "La poule"],
+                    ["鼠", "ねずみ", "La souris"],
+                    ["リス", "リス", "L’écureuil"],
+                    ["針鼠", "はりねずに", "L’hérisson"],
+                    ["ハムスター", "ハムスター", "L’hamster"],
+                    ["フェレット", "フェレット", "Le furet"],
+                ],
+                "Les membres de sa famille": [
+                    ["夫", "おっと", "Mon époux"],
+                    ["妻", "つま", "Mon épouse"],
+                    ["両親", "リョウシン", "Mes parents"],
+                    ["父", "ちち", "Mon père"],
+                    ["母", "はは", "Ma mère"],
+                    ["子供", "こども", "Mon enfant"],
+                    ["息子", "むすこ", "Mon fils"],
+                    ["娘", "むすめ", "Ma fille"],
+                    ["祖父母", "ソフボ", "Mes grands-parents"],
+                    ["祖父", "ソフ", "Mon grand-père"],
+                    ["祖母", "ソボ", "Ma grand-mère"],
+                    ["孫", "まご", "Mon petit enfant"],
+                    ["双子", "ふたご", "Mon jumeau/Ma jumelle"],
+                    ["兄", "あに", "Frère aîné"],
+                    ["弟", "おとうと", "Frère cadet"],
+                    ["兄弟", "キョウダイ", "La fratrie"],
+                    ["姉", "いもうと", "Soeur aînée"],
+                    ["妹", "あね", "Soeur cadette"],
+                    ["従兄", "いとこ", "cousin aîné"],
+                    ["従弟", "いとこ", "cousin cadet"],
+                    ["従姉", "いとこ", "cousine aîné"],
+                    ["従妹", "いとこ", "cousine cadette"],
+                    ["伯父", "おじ", "Oncle aîné"],
+                    ["叔父", "おじ", "Oncle cadet"],
+                    ["伯母", "おば", "Tante aînée"],
+                    ["叔母", "おば", "Tante cadette"],
+                    ["義兄", "ギケイ", "Beau frère aîné"],
+                    ["義弟", "ギテイ", "Beau frère cadet"],
+                    ["義姉", "ギシ", "Belle soeur aînée"],
+                    ["義妹", "ギマイ", "Belle soeur cadette"],
+                ],
+                "Le nom des couleurs": [
+                    ["赤", "あか", "rouge"],
+                    ["青", "あお", "bleu"],
+                    ["黄色", "きいろ", "jaune"],
+                    ["オレンジ色", "オレンジいろ", "orange"],
+                    ["紫", "むらさき", "violet"],
+                    ["緑", "みどり", "vert"],
+                    ["白", "しろ", "blanc"],
+                    ["黒", "くろ", "noir"],
+                    ["灰色", "はいいろ", "gris"],
+                    ["ピンク", "ピンク", "rose"],
+                    ["茶色", "チャいろ", "marron"],
+                    ["ベージュ", "ベージュ", "beige"],
+                    ["薄紫色", "うすむらさきいろ", "mauve"],
+                    ["マゼンタ", "マゼンタ", "magenta"],
+                    ["紅", "くれない", "cramoisi"],
+                    ["シアン", "シアン", "cyan"],
+                    ["水色", "みずいろ", "bleu clair"],
+                    ["インディゴ", "インディゴ", "indigo"],
+                    ["虹色", "にじいろ", "couleur de l’arc en ciel"],
+                    ["金色", "キンいろ", "or"],
+                ],
+                "Les nombres": [
+                    ["零", "レイ", "0"],
+                    ["一", "イチ", "1"],
+                    ["二", "ニ", "2"],
+                    ["三", "サン", "3"],
+                    ["四", "よん", "4"],
+                    ["五", "ゴ", "5"],
+                    ["六", "ロク", "6"],
+                    ["七", "なな", "7"],
+                    ["八", "ハチ", "8"],
+                    ["九", "キュウ", "9"],
+                    ["十", "ジュウ", "10"],
+                    ["はた", "はた", "20"],
+                    ["百", "ヒャク", "100"],
+                    ["千", "セン", "1000"],
+                    ["万", "マン", "10 000"],
+                    ["億", "オク", "100 000 000"],
+                    ["兆", "チョウ", "1 000 000 000 000"],
+                ],
+                "Les jours de la semaine": [
+                    ["日曜日", "ニチヨウび", "dimanche"],
+                    ["月曜日", "ゲツヨウび", "lundi"],
+                    ["火曜日", "カヨウび", "mardi"],
+                    ["水曜日", "スイヨウび", "mercredi"],
+                    ["木曜日", "モクヨウび", "jeudi"],
+                    ["金曜日", "キンヨウび", "vendredi"],
+                    ["土曜日", "ドヨウび", "samedi"],
+                ],
+                "Les mois": [
+                    ["一月", "イチガツ", "janvier"],
+                    ["二月", "ニガツ", "février"],
+                    ["三月", "サンガツ", "mars"],
+                    ["四月", "シガツ", "avril"],
+                    ["五月", "ゴガツ", "mai"],
+                    ["六月", "ロクガツ", "juin"],
+                    ["七月", "シチガツ", "juillet"],
+                    ["八月", "ハチガツ", "août"],
+                    ["九月", "クガツ", "septembre"],
+                    ["十月", "ジュウガチ", "octobre"],
+                    ["十一月", "ジュウイチガツ", "novembre"],
+                    ["十二月", "ジュウニガツ", "décembre"],
+                ],
+                "Le numéro des jours": [
+                    ["一日", "ついたち", "jour 1"],
+                    ["二日", "ふつか", "jour 2"],
+                    ["三日", "みっか", "jour 3"],
+                    ["四日", "よっか", "jour 4"],
+                    ["五日", "いつか", "jour 5"],
+                    ["六日", "むいか", "jour 6"],
+                    ["七日", "なのか", "jour 7"],
+                    ["八日", "ようか", "jour 8"],
+                    ["九日", "ここのか", "jour 9"],
+                    ["十日", "とおか", "jour 10"],
+                    ["十一日", "ジュウイチニチ", "jour 11"],
+                    ["十二日", "ジュウニニチ", "jour 12"],
+                    ["十三日", "ジュウサンニチ", "jour 13"],
+                    ["十四日", "ジュウよっか", "jour 14"],
+                    ["十五日", "ジュウゴニチ", "jour 15"],
+                    ["十六日", "ジュウロクニチ", "jour 16"],
+                    ["十七日", "ジュウシチニチ", "jour 17"],
+                    ["十八日", "ジュウハチニチ", "jour 18"],
+                    ["十九日", "ジュウキュウニチ", "jour 19"],
+                    ["二十日", "はつか", "jour 20"],
+                    ["二十一日", "ニジュウイチニチ", "jour 21"],
+                    ["二十二日", "ニジュウニニチ", "jour 22"],
+                    ["二十三日", "ニジュウサンニチ", "jour 23"],
+                    ["二十四日", "ニジュウよっか", "jour 24"],
+                    ["二十五日", "ニジュウゴニチ", "jour 25"],
+                    ["二十六日", "ニジュウロクニチ", "jour 26"],
+                    ["二十七日", "ニジュウシチニチ", "jour 27"],
+                    ["二十八日", "ニジュウハチニチ", "jour 28"],
+                    ["二十九日", "ニジュウキュウニチ", "jour 29"],
+                    ["三十日", "サンジュウニチ", "jour 30"],
+                    ["三十一日", "サンジュウイチニチ", "jour 31"],
+                ],
+                "Lire l'heure": [
+                    ["時", "ジ", "l'heure"],
+                    ["午前", "ゴゼン", "avant midi"],
+                    ["午後", "ゴゴ", "après midi"],
+                    ["正午", "ショウゴ", "midi"],
+                    ["真夜中", "まよなか", "minuit"],
+                    ["分", "フン", "minute"],
+                    ["半", "ハン", "la demi"],
+                    ["一分", "イップン", "1 min"],
+                    ["二分", "ニフン", "2 min"],
+                    ["三分", "サンプン", "3 min"],
+                    ["四分", "よんプン", "4 min"],
+                    ["五分", "ゴフン", "5 min"],
+                    ["六分", "ロップン", "6 min"],
+                    ["七分", "ななフン", "7 min"],
+                    ["八分", "ハップン", "8 min"],
+                    ["九分", "キュウフン", "9 min"],
+                    ["十分", "ジュップン", "10 min"],
+                    ["秒", "ビョウ", "seconde"],
+                ],
+                "Les monstres d'Halloween": [
+                    ["ハロウィン", "ハロウィン", "Halloween"],
+                    ["怪物", "カイブツ", "le monstre"],
+                    ["モンスター", "モンスター", "le monstre (katakana)"],
+                    ["満月", "マンゲツ", "la pleine lune"],
+                    ["狼男", "おおかみおとこ", "le loup-garou"],
+                    ["悪魔", "アクマ", "le diable"],
+                    ["亡霊", "ボウレイ", "le fantôme"],
+                    ["モイラ", "モイラ", "la momie"],
+                    ["吸血鬼", "キュウケツキ", "le vampire"],
+                    ["血", "ち", "le sang"],
+                    ["骨格", "コッカク", "le squelette"],
+                    ["骨", "ほね", "l’os"],
+                    ["飴", "あめ", "le bonbon"],
+                    ["キャンディ", "キャンディ", "le bonbon (katakana)"],
+                    ["魔女", "マジョ", "la sorcière"],
+                    ["魔法使い", "マホウつかい", "le sorcier"],
+                    ["仮装", "カソウ", "le déguisement"],
+                    ["コスプレ", "コスプレ", "le cosplay"],
+                    ["箒", "ほうき", "le balai"],
+                    ["妖怪", "ヨウカイ", "l’esprit"],
+                    ["物の怪", "もののケ", "l’esprit"],
+                    ["仮面", "カメン", "le masque"],
+                    ["コウモリ", "コウモリ", "la chauve-souris"],
+                    ["墓", "はか", "la tombe"],
+                    ["墓地", "ボチ", "le cimetière"],
+                    ["ろうそく", "ろうそく", "la bougie"],
+                    ["ゾンビ", "ゾンビ", "le zombie"],
+                    ["アンデッド", "アンデッド", "le mort-vivant"],
+                    ["かぼちゃ", "かぼちゃ", "la citrouille"],
+                ],
+                "Le réveillon de Noël": [
+                    ["クリスマス", "クリスマス", "noel"],
+                    ["クリスマス・イヴ", "クリスマス・イヴ", "réveillon de noel"],
+                    ["メリークリスマス", "メリークリスマス", "joyeux noel"],
+                    ["オーロラ", "オーロラ", "l’aurore polaire"],
+                    ["雪崩", "なだれ", "avalanche"],
+                    ["イエティ", "イエティ", "yéti"],
+                    ["雪男", "ゆきおとこ", "l’homme des neiges"],
+                    ["スキー", "スキー", "le ski"],
+                    ["スノーボード", "スノーボード", "snoaboard"],
+                    ["クリスマスツリー", "クリスマスツリー", "sapin de noel"],
+                    ["飾り", "かざり", "décoration"],
+                    ["電飾", "デンショク", "décoration électrique"],
+                    ["サンタクロース", "サンタクロース", "père noel"],
+                    ["プレゼント", "プレゼント", "le cadeau"],
+                    ["雪だるま", "ゆきだるま", "bonhomme de neige"],
+                    ["柊", "ひいらぎ", "le houx"],
+                    ["西洋柊", "セイヨウひいらぎ", "le houx occidental"],
+                    ["ケーキ", "ケーキ", "le gateau"],
+                    ["氷", "こおり", "la glace"],
+                    ["スケートリンク", "スケートリンク", "patinoire"],
+                    ["スケート", "スケート", "patin à glace"],
+                    ["トナカイ", "トナカイ", "le renne"],
+                    ["そり", "そり", "traineau"],
+                    ["雪女", "ゆきおんな", "la femme des neiges"],
+                    ["雪玉", "ゆきだま", "la boule de neige"],
+                    ["玉", "たま", "la boule"],
+                    ["イグルー", "イグルー", "l’igloo"],
+                    ["流れ星", "ながれぼし", "l’étoile filante"],
+                    ["流星", "リュウセイ", "le météore"],
+                    ["銀世界", "ギンセカイ", "le paysage enneigé"],
+                ],
+                "Les vêtements du quotidien": [
+                    ["日常の服", "ニチジョウのふく", "Les vêtements du quotidien"],
+                    ["チャツ", "チャツ", "la chemise"],
+                    ["Tシャツ", "ティーシャツ", "t-shirt"],
+                    ["セーター", "セーター", "pull-over"],
+                    ["ジャケット", "ジャケット", "la veste"],
+                    ["ズボン", "ズボン", "pantalon"],
+                    ["ジーンズ", "ジーンズ", "jeans"],
+                    ["ベルト", "ベルト", "ceinture"],
+                    ["靴", "くつ", "chaussure"],
+                    ["下駄", "ゲタ", "geta"],
+                    ["運動靴", "ウンドウぐつ", "chaussure de sport"],
+                    ["靴下", "くつした", "chaussette"],
+                    ["タイツ", "タイツ", "collants"],
+                    ["ブリーフ", "ブリーフ", "slip"],
+                    ["トランクス", "トランクス", "caleçon"],
+                    ["パンティー", "パンティー", "culotte"],
+                    ["ブルマー", "ブルマー", "culotte/shorty pour le sport par ex"],
+                    ["ブラジャー", "ブラジャー", "soutien-gorge"],
+                    ["スカート", "スカート", "la jupe"],
+                    ["ミニスカート", "ミニスカート", "la minijupe"],
+                    ["ドレス", "ドレス", "la robe"],
+                    ["トレーニンゲウィア", "トレーニングウィア", "survêtement"],
+                    ["外套", "ガイトウ", "manteau (long/classe)"],
+                    ["コート", "コート", "manteau"],
+                    ["帽子", "ボウシ", "le chapeau"],
+                    ["キャップ", "キャップ", "la casquette"],
+                    ["手袋", "てぶくろ", "gant"],
+                    ["襟巻き", "えりまき", "écharpe"],
+                    ["ネクタイ", "ネクタイ", "cravate"],
+                    ["ボウ(タイ)", "ボウ(タイ)", "noeud papillon"],
+                ],
+                "Liste personnelle": [
+                    ["祭", "まつり", "le festival"],
+                    ["虫", "むし", "l’insecte"],
+                    ["日本語", "にほんご", "japonais (langue)"],
+                    ["日本人", "にほんにん", "japonais (nationalité)"],
+                ],
             };
 
             var tableEl = document.getElementById('table');
             var groupsEl = document.getElementById('groups');
             for (var groupName in wordsGroup) {
-                groupsEl.innerHTML += '<a onclick="show(\''+groupName+'\')">'+groupName+'</a>';
+                groupsEl.innerHTML += '<a onclick="show(\''+groupName.replace("'", "\\'")+'\')">'+groupName+'</a>';
             }
 
             function show(groupNameShown) {
@@ -236,6 +543,86 @@
                 }
 
                 return arr;
+            }
+
+            // Le code pour le mode "jeu"
+            var game = document.getElementById('game');
+            var gameData = {};
+            document.getElementById('game-config').addEventListener('submit', function (e) {
+                e.preventDefault();
+                clearGame();
+
+                var words = [];
+
+                for (var groupName in wordsGroup) {
+                    for (var i = 0; i < wordsGroup[groupName].length; i++) {
+                        words.push(wordsGroup[groupName][i]);
+                    }
+                }
+                words = shuffle(words);
+                var nb = document.querySelector('select[name="nb"]').value;
+                if (nb != 'all') {
+                    words = words.slice(0, nb);
+                }
+
+                var elsToDisplay = [];
+                for (var i = 0; i < words.length; i++) {
+                    elsToDisplay.push(createElGame(i, words[i][0]));
+                    elsToDisplay.push(createElGame(i, words[i][2]));
+                    if (words[i][0] != words[i][1]) {
+                        gameData[i] = 3;
+                        elsToDisplay.push(createElGame(i, words[i][1]));
+                    } else {
+                        // Pas de kanji, on affiche qu'une fois.
+                        gameData[i] = 2;
+                    }
+                }
+
+                elsToDisplay = shuffle(elsToDisplay);
+                game.innerHTML = elsToDisplay.join('');
+            });
+
+            function createElGame(i, word) {
+                return '<div data-group="'+i+'" onclick=gameChoice(this)>'+word+'</div>';
+            }
+
+            function gameChoice(el) {
+                if (el.classList.contains('good')) {
+                    return;
+                }
+
+                el.classList.toggle('selected');
+
+                var selected = document.querySelectorAll('#game .selected');
+                var group = null;
+                var count = 1;
+                selected.forEach(function (elSelected) {
+                    if (group === null) {
+                        group = elSelected.dataset.group;
+                    } else if (group != elSelected.dataset.group) {
+                        // L'élément choisit n'est pas du même groupe.
+                        alert('PAS ENSEMBLE');
+                        el.classList.toggle('selected');
+                        return false;
+                    } else {
+                        count++;
+                    }
+                });
+                if (count == gameData[group]) {
+                    selected.forEach(function (elSelected) {
+                        elSelected.classList.remove('selected');
+                        elSelected.classList.add('good');
+                    });
+                }
+
+                if (document.querySelector('#game > div:not(.good)') == null) {
+                    alert("C'est fini bravo !");
+                }
+            }
+
+            function clearGame() {
+                game.innerHTML = '';
+                gameData = {};
             }
         </script>
     </body>
