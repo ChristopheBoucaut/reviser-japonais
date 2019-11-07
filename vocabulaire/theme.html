@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Réviser le vocabulaire</title>
+        <style media="screen">
+            #groups a {
+                text-decoration: underline;
+                cursor: pointer;
+                margin-right: 7px;
+            }
+
+            #table {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                border: 1px solid #000;
+            }
+
+            #table > div {
+                padding: 5px;
+                border: 1px solid black;
+            }
+
+            #table > div[contenteditable] {
+                background-color: #C3C3FF;
+            }
+
+            #table > div[contenteditable].error {
+                background-color: #FF8080;
+            }
+            #table > div[contenteditable].success {
+                background-color: #94CA94;
+            }
+        </style>
+
+        <script src="/js/utils.js" type="text/javascript"></script>
+        <script src="/js/data/vocabulaire.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <a href="/index.html">&lt; Retour</a> <h1>Réviser le vocabulaire en mode carte</h1>
+        <p id="groups">Listes : <a onclick="show('all')">Tous</a></p>
+
+        <p>
+            <button onclick="correct()">Corriger</button>
+            <button onclick="resolve()">Voir réponses</button>
+        </p>
+
+        <div id="table"></div>
+
+        <script type="text/javascript">
+            var tableEl = document.getElementById('table');
+            var groupsEl = document.getElementById('groups');
+            for (var groupName in Revision.wordsGroup) {
+                groupsEl.innerHTML += '<a onclick="show(\''+groupName.replace("'", "\\'")+'\')">'+groupName+'</a>';
+            }
+
+            function show(groupNameShown) {
+                clear();
+
+                var words = [];
+                if (groupNameShown == 'all') {
+                    for (var groupName in Revision.wordsGroup) {
+                        for (var i = 0; i < Revision.wordsGroup[groupName].length; i++) {
+                            words.push(Revision.wordsGroup[groupName][i]);
+                        }
+                    }
+                } else {
+                    for (var i = 0; i < Revision.wordsGroup[groupNameShown].length; i++) {
+                        words.push(Revision.wordsGroup[groupNameShown][i]);
+                    }
+                }
+                words = Revision.utils.shuffle(words);
+
+                for (var i = 0; i < words.length; i++) {
+                    var displayedPosition = Math.floor(Math.random() * Math.floor(words[i].length));
+                    for (var j = 0; j < words[i].length; j++) {
+                        var lineEl = '<div data-answer="'+words[i][j]+'" data-lang="'+(j == 2 ? 'fr' : 'jp')+'"';
+                        if (j == displayedPosition) {
+                            lineEl += '>'+words[i][j];
+                        } else {
+                            lineEl += ' contenteditable="true">';
+                        }
+                        lineEl += '</div>';
+                        tableEl.innerHTML += lineEl;
+                    }
+                }
+            }
+
+            function correct() {
+                var lines = tableEl.getElementsByTagName('div');
+                var errors = 0;
+                for (var i = 0; i < lines.length; i++) {
+                    lines[i].classList.remove('success');
+                    lines[i].classList.remove('error');
+
+                    var classCorrect = 'success';
+                    var lang = lines[i].dataset.lang;
+                    var answer = lines[i].dataset.answer;
+                    var response = lines[i].textContent;
+
+                    var isGood;
+                    if (lang == 'jp') {
+                        isGood = answer == response;
+                    } else {
+                        answerParts = answer.split(' ');
+                        responseParts = response.split(' ');
+
+                        // Pour gérer "le", "la".
+                        if (answerParts.length == 2 && answerParts[0].length == 2 && responseParts.length == 1) {
+                            answer = answerParts[1];
+                        }
+
+                        isGood = answer.localeCompare(response, 'fr', {sensitivity: 'base', ignorePunctuation: true});
+                        isGood = isGood == 0;
+                    }
+
+                    if (!isGood) {
+                        classCorrect = 'error';
+                        errors++;
+                    }
+
+                    lines[i].classList.add(classCorrect);
+                }
+
+                if (errors) {
+                    alert(errors+" erreurs !");
+                } else {
+                    alert("Tout bon O_o");
+                }
+            }
+
+            function resolve() {
+                var lines = tableEl.getElementsByTagName('div');
+                for (var i = 0; i < lines.length; i++) {
+                    lines[i].textContent = lines[i].dataset.answer;
+                }
+            }
+
+            function clear() {
+                tableEl.innerHTML = '';
+            }
+        </script>
+    </body>
+</html>

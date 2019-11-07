@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Réviser le vocabulaire</title>
+        <style media="screen">
+            #game > div {
+                display: inline-block;
+                margin: 4px;
+                border: 1px solid black;
+                padding: 4px;
+            }
+
+            #game > div:not(.good) {
+                cursor: pointer;
+            }
+
+            #game > div.selected {
+                color: white;
+                background: blue;
+            }
+
+            #game > div.good {
+                color: white;
+                background: green;
+            }
+        </style>
+
+        <script src="/js/utils.js" type="text/javascript"></script>
+        <script src="/js/data/vocabulaire.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <a href="/index.html">&lt; Retour</a> <h1>Réviser le vocabulaire en mode jeu</h1>
+
+        <form id="game-config">
+            <select name="nb">
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="all">Tous</option>
+            </select>
+            <input type="submit" value="GO !" />
+        </form>
+        <div id="game"></div>
+
+        <script type="text/javascript">
+            // Le code pour le mode "jeu"
+            var game = document.getElementById('game');
+            var gameData = {};
+            document.getElementById('game-config').addEventListener('submit', function (e) {
+                e.preventDefault();
+                clearGame();
+
+                var words = [];
+
+                for (var groupName in Revision.wordsGroup) {
+                    for (var i = 0; i < Revision.wordsGroup[groupName].length; i++) {
+                        words.push(Revision.wordsGroup[groupName][i]);
+                    }
+                }
+                words = Revision.utils.shuffle(words);
+                var nb = document.querySelector('select[name="nb"]').value;
+                if (nb != 'all') {
+                    words = words.slice(0, nb);
+                }
+
+                var elsToDisplay = [];
+                for (var i = 0; i < words.length; i++) {
+                    elsToDisplay.push(createElGame(i, words[i][0]));
+                    elsToDisplay.push(createElGame(i, words[i][2]));
+                    if (words[i][0] != words[i][1]) {
+                        gameData[i] = 3;
+                        elsToDisplay.push(createElGame(i, words[i][1]));
+                    } else {
+                        // Pas de kanji, on affiche qu'une fois.
+                        gameData[i] = 2;
+                    }
+                }
+
+                elsToDisplay = Revision.utils.shuffle(elsToDisplay);
+                game.innerHTML = elsToDisplay.join('');
+            });
+
+            function createElGame(i, word) {
+                return '<div data-group="'+i+'" onclick=gameChoice(this)>'+word+'</div>';
+            }
+
+            function gameChoice(el) {
+                if (el.classList.contains('good')) {
+                    return;
+                }
+
+                el.classList.toggle('selected');
+
+                var selected = document.querySelectorAll('#game .selected');
+                var group = null;
+                var count = 1;
+                selected.forEach(function (elSelected) {
+                    if (group === null) {
+                        group = elSelected.dataset.group;
+                    } else if (group != elSelected.dataset.group) {
+                        // L'élément choisit n'est pas du même groupe.
+                        alert('PAS ENSEMBLE');
+                        el.classList.toggle('selected');
+                        return false;
+                    } else {
+                        count++;
+                    }
+                });
+                if (count == gameData[group]) {
+                    selected.forEach(function (elSelected) {
+                        elSelected.classList.remove('selected');
+                        elSelected.classList.add('good');
+                    });
+                }
+
+                if (document.querySelector('#game > div:not(.good)') == null) {
+                    alert("C'est fini bravo !");
+                }
+            }
+
+            function clearGame() {
+                game.innerHTML = '';
+                gameData = {};
+            }
+        </script>
+    </body>
+</html>
