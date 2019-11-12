@@ -392,7 +392,7 @@ Revision.wordsGroup = (function () {
             ["デート", "デート", "rendez-vous galant"],
             ["ナンパ", "ナンパ", "la drague"],
             ["愛しています", "アイしています", "je t’aime (polie)"],
-            ["愛している", "アイしている", "je t’aime (neutre)"],
+            ["愛している", "アイしている", "je t’aime"],
             ["恋人", "こいびと", "petit-ami (mixte)"],
             ["彼氏", "かれシ", "petit-ami (homme)"],
             ["彼女", "かのジョ", "petit-ami (femme)"],
