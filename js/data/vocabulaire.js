@@ -3,6 +3,7 @@ Revision.wordsGroup = (function () {
 
     return {
         "Premiers mots en kanji": [
+            ["人", "ひと", "La personne"],
             ["男", "おとこ", "L'homme"],
             ["女", "おんな", "La femme"],
             ["子", "こ", "L'enfant"],
