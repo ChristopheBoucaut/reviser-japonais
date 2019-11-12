@@ -52,13 +52,7 @@
                 e.preventDefault();
                 clearGame();
 
-                var words = [];
-
-                for (var groupName in Revision.wordsGroup) {
-                    for (var i = 0; i < Revision.wordsGroup[groupName].length; i++) {
-                        words.push(Revision.wordsGroup[groupName][i]);
-                    }
-                }
+                var words = Revision.utils.wordsToArray(Revision.wordsGroup);
                 words = Revision.utils.shuffle(words);
                 var nb = document.querySelector('select[name="nb"]').value;
                 if (nb != 'all') {
