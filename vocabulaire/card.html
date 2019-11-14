@@ -11,38 +11,47 @@
                 grid-template-rows: auto auto 1fr;
             }
 
+            #utils h1 {
+                display: inline-block;
+                margin-right: 14px;
+            }
+
             #board {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                grid-template-rows: 2fr auto auto;
+                grid-template-rows: 2fr auto auto auto;
                 grid-template-areas:
                     "a a"
-                    "b1 c1"
-                    "b2 c2";
+                    "i i";
                 text-align: center;
                 align-items: center;
                 border: 2px solid grey;
                 position: relative;
             }
 
-            #board > div:first-child {
-                font-size: 100px;
+            #board > div#ask {
+                font-size: 16vw;
+                grid-area: a;
             }
 
-            #board > div:not(:first-child) {
-                font-size: 50px;
+            #board > div#ask + div {
+                grid-area: i;
+                border: 2px solid grey;
+                background-color: red;
+                color: white;
+                font-weight: bold;
+            }
+
+            #board > div.answer {
+                font-size: 8vw;
                 border: 2px solid grey;
                 cursor: pointer;
                 height: 100%;
                 padding: 0;
             }
 
-            #board > div:first-child {
-                grid-area: a;
-            }
-
-            #score-good-anwser,
-            #score-bad-anwser {
+            #score-good-answer,
+            #score-bad-answer {
                 padding: 4px;
                 color: white;
                 font-weight: bold;
@@ -50,12 +59,12 @@
                 top: 0;
             }
 
-            #score-good-anwser {
+            #score-good-answer {
                 background-color: green;
                 left: 0;
             }
 
-            #score-bad-anwser {
+            #score-bad-answer {
                 background-color: red;
                 right: 0;
             }
@@ -67,18 +76,22 @@
     <body>
         <a href="/index.html">&lt; Retour</a>
 
-        <h1>Réviser le vocabulaire en mode carte</h1>
+        <div id="utils">
+            <h1>Réviser le vocabulaire en mode carte</h1>
+            <button onclick="toggleFullscreen()">toggleFullscreens</button>
+        </div>
 
         <div id="board">
+            <div id="ask"></div>
             <div></div>
 
-            <div onclick="submitAnswer(this)"></div>
-            <div onclick="submitAnswer(this)"></div>
-            <div onclick="submitAnswer(this)"></div>
-            <div onclick="submitAnswer(this)"></div>
+            <div class="answer" onclick="submitAnswer(this)"></div>
+            <div class="answer" onclick="submitAnswer(this)"></div>
+            <div class="answer" onclick="submitAnswer(this)"></div>
+            <div class="answer" onclick="submitAnswer(this)"></div>
 
-            <span id="score-good-anwser">0</span>
-            <span id="score-bad-anwser">0</span>
+            <span id="score-good-answer">0</span>
+            <span id="score-bad-answer">0</span>
         </div>
 
         <script type="text/javascript">
@@ -86,10 +99,11 @@
             words = Revision.utils.shuffle(words);
 
             // On récupère les éléments HTML récurrents pour le jeu.
-            var askEl = document.querySelector('#board div:first-child');
-            var answersEls = document.querySelectorAll('#board div:not(:first-child)');
-            var scoreGoodAnswerEl = document.querySelector('#score-good-anwser');
-            var scoreBadAnswerEl = document.querySelector('#score-bad-anwser');
+            var askEl = document.querySelector('#board div#ask');
+            var infoEl = document.querySelector('#board > div#ask + div');
+            var answersEls = document.querySelectorAll('#board div.answer');
+            var scoreGoodAnswerEl = document.querySelector('#score-good-answer');
+            var scoreBadAnswerEl = document.querySelector('#score-bad-answer');
 
             // Les modes de question/reponses, correspond à la position dans les array de vocabulaire.
             var MODE_KANJI = 0;
@@ -97,11 +111,11 @@
             var MODE_TRAD = 2;
 
             // Les modes de réponses qui seront proposés.
-            var anwserModes;
+            var answerModes;
             // La bonne réponse.
             var goodAnwser;
             // Les réponses qui seront proposées.
-            var anwsersWords;
+            var answersWords;
             // Le score.
             var scoreGoodAnswer = 0;
             var scoreBadAnswer = 0;
@@ -116,20 +130,20 @@
                 goodAnwser = words[Revision.utils.random(words.length)];
 
                 var singleMode = false;
-                anwserModes = [MODE_KANJI, MODE_KANA, MODE_TRAD];
+                answerModes = [MODE_KANJI, MODE_KANA, MODE_TRAD];
                 if (goodAnwser[0] == goodAnwser[1]) {
                     // Il n'y a pas de kanji.
                     singleMode = true;
-                    anwserModes.shift();
+                    answerModes.shift();
                 }
 
                 // On mélange les modes et on détermine le mode qui sera la question.
-                anwserModes = Revision.utils.shuffle(anwserModes);
-                var askMode = anwserModes.shift();
+                answerModes = Revision.utils.shuffle(answerModes);
+                var askMode = answerModes.shift();
 
                 // On trouve les 3 autres réponses à proposer.
-                anwsersWords = [goodAnwser];
-                while (anwsersWords.length < 4) {
+                answersWords = [goodAnwser];
+                while (answersWords.length < 4) {
                     var answerWord = words[Revision.utils.random(words.length)];
                     var answersingleMode = answerWord[0] == answerWord[1];
 
@@ -137,11 +151,11 @@
                         continue;
                     }
 
-                    if (anwsersWords.indexOf(answerWord) != -1) {
+                    if (answersWords.indexOf(answerWord) != -1) {
                         continue;
                     }
 
-                    anwsersWords.push(answerWord);
+                    answersWords.push(answerWord);
                 }
 
                 askEl.innerHTML = goodAnwser[askMode];
@@ -152,9 +166,9 @@
              * Randomise les réponses et les affiches pour le mode courant.
              */
             function showAnswers() {
-                anwsersWords = Revision.utils.shuffle(anwsersWords);
-                answersEls.forEach(function (anwserEl, i) {
-                    anwserEl.innerHTML = anwsersWords[i][anwserModes[0]];
+                answersWords = Revision.utils.shuffle(answersWords);
+                answersEls.forEach(function (answerEl, i) {
+                    answerEl.innerHTML = answersWords[i][answerModes[0]];
                 });
             }
 
@@ -164,10 +178,12 @@
              * @param {Object} el L'élément où il a cliqué.
              */
             function submitAnswer(el) {
-                if (el.innerHTML != goodAnwser[anwserModes[0]]) {
+                infoEl.innerHTML = '';
+
+                if (el.innerHTML != goodAnwser[answerModes[0]]) {
                     scoreBadAnswer++;
                     scoreBadAnswerEl.innerHTML = scoreBadAnswer;
-                    alert("La bonne réponse était : "+goodAnwser[anwserModes[0]]);
+                    infoEl.innerHTML = "La bonne réponse était : "+goodAnwser[answerModes[0]];
                 } else {
                     scoreGoodAnswer++;
                     scoreGoodAnswerEl.innerHTML = scoreGoodAnswer;
@@ -175,14 +191,41 @@
                 // On actualise le score.
 
                 // On passe au mode suivant.
-                anwserModes.shift();
+                answerModes.shift();
 
-                if (anwserModes.length) {
+                if (answerModes.length) {
                     // Reste encore des modes.
                     showAnswers();
                 } else {
                     // Passe au mot suivant.
                     prepareBoard();
+                }
+            }
+
+            /**
+             * Permet de basculer le mode plein écran.
+             */
+            function toggleFullscreen() {
+                if (!document.fullscreen) {
+                    fullscreen();
+                } else {
+                    exitFullscreen();
+                }
+            }
+
+            /**
+             * Passage en fullscreen.
+             */
+            function fullscreen() {
+                document.documentElement.requestFullscreen();
+            }
+
+            /**
+             * Quitte le mode fullscreen.
+             */
+            function exitFullscreen() {
+                if (document.fullscreen) {
+                    document.exitFullscreen();
                 }
             }
         </script>
