@@ -11,26 +11,6 @@
                 grid-template-rows: auto auto 1fr;
             }
 
-            #scores h1 {
-                display: inline-block;
-                margin-right: 14px;
-            }
-
-            #score-good-anwser span,
-            #score-bad-anwser span {
-                padding: 4px;
-                color: white;
-                font-weight: bold;
-            }
-
-            #score-good-anwser span {
-                background-color: green;
-            }
-
-            #score-bad-anwser span {
-                background-color: red;
-            }
-
             #board {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -42,24 +22,42 @@
                 text-align: center;
                 align-items: center;
                 border: 2px solid grey;
-                font-size: 50px;
+                position: relative;
             }
 
-            #board > div {
-                padding: 14px;
+            #board > div:first-child {
+                font-size: 100px;
             }
 
             #board > div:not(:first-child) {
+                font-size: 50px;
                 border: 2px solid grey;
                 cursor: pointer;
-            }
-
-            #board > div:not(:first-child):hover {
-                background: #00800066;
+                height: 100%;
+                padding: 0;
             }
 
             #board > div:first-child {
                 grid-area: a;
+            }
+
+            #score-good-anwser,
+            #score-bad-anwser {
+                padding: 4px;
+                color: white;
+                font-weight: bold;
+                position: absolute;
+                top: 0;
+            }
+
+            #score-good-anwser {
+                background-color: green;
+                left: 0;
+            }
+
+            #score-bad-anwser {
+                background-color: red;
+                right: 0;
             }
         </style>
 
@@ -69,12 +67,7 @@
     <body>
         <a href="/index.html">&lt; Retour</a>
 
-        <div id="scores">
-            <h1>Réviser le vocabulaire en mode carte</h1>
-
-            <span id="score-good-anwser"><span>0</span> Bonnes réponses</span> |
-            <span id="score-bad-anwser"><span>0</span> Mauvaises réponses</span>
-        </div>
+        <h1>Réviser le vocabulaire en mode carte</h1>
 
         <div id="board">
             <div></div>
@@ -83,6 +76,9 @@
             <div onclick="submitAnswer(this)"></div>
             <div onclick="submitAnswer(this)"></div>
             <div onclick="submitAnswer(this)"></div>
+
+            <span id="score-good-anwser">0</span>
+            <span id="score-bad-anwser">0</span>
         </div>
 
         <script type="text/javascript">
@@ -92,8 +88,8 @@
             // On récupère les éléments HTML récurrents pour le jeu.
             var askEl = document.querySelector('#board div:first-child');
             var answersEls = document.querySelectorAll('#board div:not(:first-child)');
-            var scoreGoodAnswerEl = document.querySelector('#score-good-anwser span');
-            var scoreBadAnswerEl = document.querySelector('#score-bad-anwser span');
+            var scoreGoodAnswerEl = document.querySelector('#score-good-anwser');
+            var scoreBadAnswerEl = document.querySelector('#score-bad-anwser');
 
             // Les modes de question/reponses, correspond à la position dans les array de vocabulaire.
             var MODE_KANJI = 0;
