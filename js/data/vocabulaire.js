@@ -159,7 +159,7 @@ Revision.wordsGroup = (function () {
             ["水色", "みずいろ", "bleu clair"],
             ["インディゴ", "インディゴ", "indigo"],
             ["虹色", "にじいろ", "couleur de l’arc en ciel"],
-            ["金色", "キンいろ", "or"],
+            ["金色", "キンいろ", "couleur or"],
         ],
         "Les nombres": [
             ["零", "レイ", "0"],
