@@ -78,6 +78,9 @@
 
         <div id="utils">
             <h1>Réviser le vocabulaire en mode carte</h1>
+            <select onchange="restrict(this)">
+                <option value="">Tout</option>
+            </select>
             <button onclick="toggleFullscreen()">toggleFullscreens</button>
         </div>
 
@@ -95,6 +98,11 @@
         </div>
 
         <script type="text/javascript">
+            var switchEl = document.querySelector('select');
+            for (var nameGroup in Revision.wordsGroup) {
+                switchEl.innerHTML += '<option value="'+nameGroup+'">'+nameGroup+'</option>';
+            }
+
             var words = Revision.utils.wordsToArray(Revision.wordsGroup);
             words = Revision.utils.shuffle(words);
 
@@ -147,7 +155,7 @@
                     var answerWord = words[Revision.utils.random(words.length)];
                     var answersingleMode = answerWord[0] == answerWord[1];
 
-                    if (singleMode != answersingleMode) {
+                    if (!singleMode && answersingleMode) {
                         continue;
                     }
 
@@ -200,6 +208,19 @@
                     // Passe au mot suivant.
                     prepareBoard();
                 }
+            }
+
+            /**
+             * Restreint à un thème donné.
+             */
+            function restrict(el) {
+                if (!el.value) {
+                    words = Revision.utils.wordsToArray(Revision.wordsGroup);
+                } else {
+                    words = Revision.wordsGroup[el.value];
+                }
+                words = Revision.utils.shuffle(words);
+                prepareBoard();
             }
 
             /**
