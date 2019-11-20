@@ -466,7 +466,7 @@ Revision.wordsGroup = (function () {
             ["笑う", "わらう", "rire"],
         ],
         "Le corps humain": [
-            ["人体の単語", "ジンタイの単語", "Le corps humain"],
+            ["人体の単語", "ジンタイのタンゴ", "Le corps humain"],
             ["頭", "あたま", "la tête"],
             ["髪", "かみ", "les cheveux"],
             ["髪の毛", "かみのけ", "le cheveu"],
