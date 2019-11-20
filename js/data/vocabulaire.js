@@ -471,7 +471,7 @@ Revision.wordsGroup = (function () {
             ["髪", "かみ", "les cheveux"],
             ["髪の毛", "かみのけ", "le cheveu"],
             ["目", "め", "l’oeil"],
-            ["耳", "みみ", "mimi"],
+            ["耳", "みみ", "l'oreille"],
             ["鼻", "はな", "le nez"],
             ["口", "くち", "la bouche"],
             ["髭", "ひげ", "la barbe"],
