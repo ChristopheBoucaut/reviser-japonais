@@ -341,7 +341,7 @@ Revision.wordsGroup = (function () {
             ["スカート", "スカート", "la jupe"],
             ["ミニスカート", "ミニスカート", "la minijupe"],
             ["ドレス", "ドレス", "la robe"],
-            ["トレーニンゲウィア", "トレーニングウィア", "survêtement"],
+            ["トレーニングウィア", "トレーニングウィア", "survêtement"],
             ["外套", "ガイトウ", "manteau (long/classe)"],
             ["コート", "コート", "manteau"],
             ["帽子", "ボウシ", "le chapeau"],
