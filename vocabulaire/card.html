@@ -78,7 +78,7 @@
 
         <div id="utils">
             <h1>Réviser le vocabulaire en mode carte</h1>
-            <select onchange="restrict(this)">
+            <select onchange="restrict()">
                 <option value="">Tout</option>
             </select>
             <button onclick="toggleFullscreen()">toggleFullscreens</button>
@@ -103,8 +103,9 @@
                 switchEl.innerHTML += '<option value="'+nameGroup+'">'+nameGroup+'</option>';
             }
 
-            var words = Revision.utils.wordsToArray(Revision.wordsGroup);
-            words = Revision.utils.shuffle(words);
+            // Les mots utilisés pour l'exercice et la position dans ces derniers.
+            var words;
+            var currentWord;
 
             // On récupère les éléments HTML récurrents pour le jeu.
             var askEl = document.querySelector('#board div#ask');
@@ -128,6 +129,9 @@
             var scoreGoodAnswer = 0;
             var scoreBadAnswer = 0;
 
+            // On prepare les mots.
+            prepareWords();
+
             // Démarre le plateau.
             prepareBoard();
 
@@ -135,7 +139,12 @@
              * Détermine la bonne réponse, les mots proposés en même temps, les modes de questions et rempli le plateau avec.
              */
             function prepareBoard() {
-                goodAnwser = words[Revision.utils.random(words.length)];
+                goodAnwser = words[currentWord];
+                currentWord++;
+                if (currentWord >= words.length) {
+                    // On est à la fin, on remélange et repart de 0.
+                    prepareWords();
+                }
 
                 var singleMode = false;
                 answerModes = [MODE_KANJI, MODE_KANA, MODE_TRAD];
@@ -213,14 +222,23 @@
             /**
              * Restreint à un thème donné.
              */
-            function restrict(el) {
-                if (!el.value) {
-                    words = Revision.utils.wordsToArray(Revision.wordsGroup);
-                } else {
-                    words = Revision.wordsGroup[el.value];
-                }
-                words = Revision.utils.shuffle(words);
+            function restrict() {
+                prepareWords();
                 prepareBoard();
+            }
+
+            /**
+             * Melange et reset les compteurs nécessaire.
+             */
+            function prepareWords() {
+                if (switchEl.value) {
+                    words = Revision.wordsGroup[switchEl.value];
+                } else {
+                    words = Revision.utils.wordsToArray(Revision.wordsGroup);
+                }
+
+                words = Revision.utils.shuffle(words);
+                currentWord = 0;
             }
 
             /**
