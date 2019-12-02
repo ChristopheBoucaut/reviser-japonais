@@ -139,9 +139,9 @@ var jsonOutput = `Revision.wordsGroup = (function () {
 for (var groupName in wordsGroup) {
     jsonOutput += '        "'+groupName+'": [\n';
     for (var i = 0; i < wordsGroup[groupName].length; i++) {
-        var part0 = JSON.stringify(wordsGroup[groupName][i][0]);
-        var part1 = JSON.stringify(wordsGroup[groupName][i][1]);
-        var part2 = JSON.stringify(wordsGroup[groupName][i][2]);
+        var part0 = JSON.stringify(wordsGroup[groupName][i][0].replace(/\s+/, ' '));
+        var part1 = JSON.stringify(wordsGroup[groupName][i][1].replace(/\s+/, ' '));
+        var part2 = JSON.stringify(wordsGroup[groupName][i][2].replace(/\s+/, ' '));
         jsonOutput += '            ['+part0+', '+part1+', '+part2+'],\n';
     }
     jsonOutput += '        ],\n';
