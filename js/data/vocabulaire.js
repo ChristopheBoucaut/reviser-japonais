@@ -124,7 +124,7 @@ Revision.wordsGroup = (function () {
             ["はい", "はい", "oui"],
             ["いいえ", "いいえ", "non"],
             ["お願いします", "おねがいします", "S’il vous plait"],
-            ["ありがとう(+ ございます)", "ありがとう(+ございます)", "merci (+ formel)"],
+            ["ありがとう(+ ございます)", "ありがとう(+ ございます)", "merci (+ formel)"],
             ["どういたしまして", "どういたしまして", "Il n’y a pas de quoi"],
             ["おはよう(+ ございます)", "おはよう(+ ございます)", "Bonjour le matin (+ formel)"],
             ["こんにちは", "こんにちは", "Bonjour la journée"],
@@ -502,6 +502,14 @@ Revision.wordsGroup = (function () {
             ["戻る", "もどる", "revenir, retourner"],
             ["向かう", "むかう", "se diriger vers"],
             ["進む", "すすむ", "avancer, progresser"],
+            ["走る", "はしる", "courir"],
+            ["売る", "うる", "Vendre"],
+            ["あげる", "あげる", "Donner"],
+            ["教える", "おしえる", "Enseigner"],
+            ["会う", "あう", "Rencontrer"],
+            ["変わる", "かわる", "Se changer en"],
+            ["飛ぶ", "とぶ", "Voler"],
+            ["泳ぐ", "およぐ", "Nager"],
         ],
         "Le corps humain": [
             ["人体の単語", "ジンタイのタンゴ", "Le corps humain"],
@@ -605,6 +613,7 @@ Revision.wordsGroup = (function () {
             ["湖", "みずうみ", "le lac"],
             ["都", "みやこ", "la capitale"],
             ["島", "しま", "l’ile"],
+            ["火山", "カザン", "Volcan"],
         ],
 
     };
