@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Tout le vocabulaire</title>
+        <style media="screen">
+            .group {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                border: 1px solid #000;
+            }
+
+            .group > div {
+                padding: 5px;
+                border: 1px solid black;
+                text-align: center;
+            }
+
+            .group > div > div:nth-child(1) {
+                font-size: 50px;
+            }
+
+            .group > div > div:nth-child(2) {
+                font-size: 25px;
+            }
+
+            .group > div > div:nth-child(3) {
+                font-size: 16px;
+            }
+        </style>
+
+        <script src="../js/utils.js" type="text/javascript"></script>
+        <script src="../js/data/vocabulaire.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <a href="./../index.html">&lt; Retour</a> <h1>Tout le vocabulaire</h1>
+
+        <input id="search-romaji" type="radio" name="type" value="romaji" checked>
+        <label for="search-romaji">Romaji</label>
+
+        <input id="search-kanji" type="radio" name="type" value="kanji">
+        <label for="search-kanji">Kanji</label>
+
+        <input id="search-kana" type="radio" name="type" value="kana">
+        <label for="search-kana">Kana</label>
+
+        <input id="search" type="text" name="search" placeholder="Rechercher un terme" />
+
+        <div id="table"></div>
+
+        <script type="text/javascript">
+            var tableEl = document.getElementById('table');
+            var inputEl = document.getElementById('search');
+            var optionEls = document.querySelectorAll('input[type="radio"]');
+
+            var htmlForTable = '';
+            for (var nameGroup in Revision.wordsGroup) {
+                htmlForTable += '<h2>'+nameGroup+'</h2><div class="group">';
+
+                for (var i = 0; i < Revision.wordsGroup[nameGroup].length; i++) {
+                    var htmlForWord = '';
+                    var dataForWord = '';
+                    for (var j = 0; j < Revision.wordsGroup[nameGroup][i].length; j++) {
+                        if (Revision.wordsGroup[nameGroup][i][j] == Revision.wordsGroup[nameGroup][i][j+1]) {
+                            continue;
+                        }
+
+                        var word = Revision.wordsGroup[nameGroup][i][j];
+                        var wordNormalized = normalizeStringToSearch(word);
+                        htmlForWord += '<div>'+word+'</div>';
+                        switch (j) {
+                            case 0:
+                                dataForWord += ' data-kanji="'+wordNormalized+'" ';
+                                break;
+                            case 1:
+                                dataForWord += ' data-kana="'+wordNormalized+'" ';
+                                break;
+                            case 2:
+                                dataForWord += ' data-romaji="'+wordNormalized+'" ';
+                                break;
+                        }
+                    }
+                    htmlForTable += '<div '+dataForWord+'>'+htmlForWord+'</div>';
+                }
+                htmlForTable += '</div>';
+            }
+            tableEl.innerHTML += htmlForTable;
+
+            inputEl.onkeyup = search;
+            for (var i = 0; i < optionEls.length; i++) {
+                optionEls[i].onchange = search;
+            }
+
+            var itemsSelector = '#table .group > div';
+            var styleEl;
+            var previousFilter = '';
+            var previousDataType = '';
+            function search() {
+                var filter = normalizeStringToSearch(inputEl.value);
+                var dataType = document.querySelector('input[type="radio"]:checked').value;
+
+                if (previousFilter == filter && previousDataType == dataType) {
+                    // Même chose qu'au précédent appel, on ne fait rien.
+                    return;
+                }
+                previousFilter = filter;
+                previousDataType = dataType;
+
+                if (styleEl) {
+                    document.head.removeChild(styleEl);
+                    styleEl = null;
+                }
+
+                if (filter) {
+                    styleEl = document.createElement('style');
+                    document.head.appendChild(styleEl);
+                    var styleSheet = styleEl.sheet;
+                    styleSheet.insertRule(itemsSelector+':not([data-'+dataType+'*="'+filter+'"]) { display: none; }', 0);
+                }
+            }
+
+            /**
+             * Permet de normaliser une chaine pour l'utiliser dans une recherche.
+             *
+             * @param {String} s
+             *
+             * @return {String}
+             */
+            function normalizeStringToSearch(s) {
+                // On supprime les espaces en trop.
+                s = s.replace(/\s+/g, ' ');
+                if (s.normalize) {
+                    // Si le navigateur gère la méthode, on supprime les accents pour garder la version de base du caractère.
+                    // Cf : https://stackoverflow.com/a/37511463
+                    s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                }
+
+                return s;
+            }
+        </script>
+    </body>
+</html>
