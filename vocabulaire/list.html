@@ -109,6 +109,7 @@
                 if (styleEl) {
                     document.head.removeChild(styleEl);
                     styleEl = null;
+                    hideEmptyGroups();
                 }
 
                 if (filter) {
@@ -116,6 +117,26 @@
                     document.head.appendChild(styleEl);
                     var styleSheet = styleEl.sheet;
                     styleSheet.insertRule(itemsSelector+':not([data-'+dataType+'*="'+filter+'"]) { display: none; }', 0);
+                    hideEmptyGroups();
+                }
+            }
+
+            /**
+             * Masque les groupes vides.
+             */
+            function hideEmptyGroups() {
+                var groups = document.querySelectorAll('.group');
+                for (var i = 0; i < groups.length; i++) {
+                    var show = false;
+                    var words = groups[i].querySelectorAll('div[data-romaji]');
+                    for (var j = 0; j < words.length; j++) {
+                        if (window.getComputedStyle(words[j]).display != 'none') {
+                            show = true;
+                        }
+                    }
+
+                    groups[i].style.display = show ? '' : 'none';
+                    groups[i].previousElementSibling.style.display = show ? '' : 'none';
                 }
             }
 
