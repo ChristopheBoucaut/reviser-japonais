@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="../favicon.png" />
+        <title>En voyage</title>
+        <style media="screen"></style>
+
+        <script src="/js/utils.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <a href="./../index.html">&lt; Retour</a> <h1>En voyage</h1>
+
+        <h2>Estimation prix</h2>
+        € : <input type="number" name="euro" min="1" value="1" class="money" step="any" />
+        円 : <input type="number" name="yen" min="1" class="money" step="any" />
+
+        <button id="change-taux" type="button">1€ = 円<span></span> (Changer le taux)</button>
+
+        <script type="text/javascript">
+            // Un euro devient x円.
+            var euroToYen = localStorage.getItem('utils.travel.euroToYen');
+            var changeTauxEl = document.querySelector('#change-taux');
+            var changeTauxValueEl = document.querySelector('#change-taux span');
+            var moneyEuroEl = document.querySelector('.money[name="euro"]');
+            var moneyYenEl = document.querySelector('.money[name="yen"]');
+            var moneyLastChangeEl = moneyEuroEl;
+            moneyEuroEl.onkeyup = refreshMoney;
+            moneyEuroEl.onchange = refreshMoney;
+            moneyYenEl.onkeyup = refreshMoney;
+            moneyYenEl.onchange = refreshMoney;
+
+            if (!euroToYen) {
+                // Il nous faut un taux de base.
+                changeTaux();
+            }
+
+            changeTauxValueEl.textContent = euroToYen;
+            changeTauxEl.onclick = changeTaux;
+
+            refreshMoney();
+
+            /**
+             * Actualise l'affichage du taux de conversion.
+             */
+            function refreshMoney() {
+                if (!moneyEuroEl.value && !moneyYenEl.value) {
+                    // Rien de renseigné, on fait rien.
+                    return;
+                }
+
+                if (this == moneyEuroEl || this == moneyYenEl) {
+                    // Vient d'un event. On mémorise l'entrée pour s'en servir de référent.
+                    moneyLastChangeEl = this;
+                }
+
+                if (moneyLastChangeEl == moneyEuroEl) {
+                    moneyYenEl.value = (moneyEuroEl.value * euroToYen).toFixed(2);
+                } else {
+                    moneyEuroEl.value = (moneyYenEl.value / euroToYen).toFixed(2);
+                }
+            }
+
+            function changeTaux() {
+                var newEuroToYen = prompt("1€ vaut combien de 円 ?");
+                if (newEuroToYen) {
+                    euroToYen = newEuroToYen;
+                    changeTauxValueEl.textContent = euroToYen;
+                    localStorage.setItem('utils.travel.euroToYen', euroToYen);
+                    refreshMoney();
+                }
+            }
+        </script>
+    </body>
+</html>
