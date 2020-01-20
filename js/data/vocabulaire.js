@@ -215,7 +215,7 @@ Revision.wordsGroup = (function () {
             ["鶏", "にわとり", "La poule"],
             ["鼠", "ねずみ", "La souris"],
             ["リス", "リス", "L’écureuil"],
-            ["針鼠", "はりねずに", "L’hérisson"],
+            ["針鼠", "はりねずみ", "L’hérisson"],
             ["ハムスター", "ハムスター", "L’hamster"],
             ["フェレット", "フェレット", "Le furet"],
         ],
@@ -510,6 +510,9 @@ Revision.wordsGroup = (function () {
             ["変わる", "かわる", "Se changer en"],
             ["飛ぶ", "とぶ", "Voler"],
             ["泳ぐ", "およぐ", "Nager"],
+            ["祈る", "いのる", "prier"],
+            ["投げる", "なげる", "jeter"],
+            ["殺す", "ころす", "tuer"],
         ],
         "Le corps humain": [
             ["人体の単語", "ジンタイのタンゴ", "Le corps humain"],
@@ -650,6 +653,9 @@ Revision.wordsGroup = (function () {
             ["都", "みやこ", "la capitale"],
             ["島", "しま", "l’ile"],
             ["火山", "カザン", "Volcan"],
+            ["授業", "ジュギョウ", "le cours (à école)"],
+            ["窓", "まど", "la fenêtre"],
+            ["犯罪者", "ハンザイシャ", "le criminel"],
         ],
 
     };
