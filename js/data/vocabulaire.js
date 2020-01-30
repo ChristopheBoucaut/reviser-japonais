@@ -221,6 +221,7 @@ Revision.wordsGroup = (function () {
             ["フェレット", "フェレット", "Le furet"],
         ],
         "Les membres de sa famille": [
+            ["家族", "かぞく", "famille"],
             ["夫", "おっと", "Mon époux"],
             ["妻", "つま", "Mon épouse"],
             ["両親", "リョウシン", "Mes parents"],
@@ -517,6 +518,11 @@ Revision.wordsGroup = (function () {
             ["殺す", "ころす", "tuer"],
             ["終わる", "おわる", "se terminer (intr.)"],
             ["始まる", "はじまる", "commencer (intr.)"],
+            ["燃える", "もえる", "brûler (intr.)"],
+            ["植える", "うえる", "planter"],
+            ["戦う", "たたかう", "se battre"],
+            ["落ちる", "おちる", "tomber"],
+            ["守る", "まもる", "protéger"],
         ],
         "Le corps humain": [
             ["人体の単語", "ジンタイのタンゴ", "Le corps humain"],
@@ -646,6 +652,7 @@ Revision.wordsGroup = (function () {
             ["来年", "ライネン", "l’année prochaine"],
             ["毎年", "マイとし", "tous les ans"],
             ["毎朝", "マイあさ", "tous les matins"],
+            ["毎晩", "マイばん", "tous les soirs"],
             ["夏", "なつ", "l’été"],
         ],
         "Géographie": [
@@ -699,6 +706,9 @@ Revision.wordsGroup = (function () {
             ["キリン", "キリン", "la girafe"],
             ["竜", "リュウ/たつ", "le dragon"],
             ["恐竜", "キョウリュウ", "le dinosaure"],
+            ["角", "つの", "la corne"],
+            ["牙", "きば", "le croc"],
+            ["爪", "つめ", "la griffe, l’ongle"],
         ],
         "Liste personnelle": [
             ["祭", "まつり", "le festival"],
@@ -719,6 +729,9 @@ Revision.wordsGroup = (function () {
             ["授業", "ジュギョウ", "le cours (à école)"],
             ["窓", "まど", "la fenêtre"],
             ["犯罪者", "ハンザイシャ", "le criminel"],
+            ["姫", "ひめ", "la princesse"],
+            ["主人公", "シュジンコウ", "le personnage principal"],
+            ["少女", "ショウジョ", "la jeune fille"],
         ],
 
     };
