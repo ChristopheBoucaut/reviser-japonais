@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="../favicon.png" />
+        <title>Règles de grammaires</title>
+
+        <script src="../js/utils.js" type="text/javascript"></script>
+        <script src="../js/data/grammaire.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <a href="./../index.html">&lt; Retour</a> <h1>Règles de grammaires</h1>
+
+        <div id="table"></div>
+
+        <script type="text/javascript">
+            var tableEl = document.getElementById('table');
+
+            var htmlForTable = '';
+            for (var title in Revision.grammaire) {
+
+                htmlForTable += '<h2>'+title+'</h2>';
+                for (var subTitle in Revision.grammaire[title]) {
+                    htmlForTable += '<h3>'+subTitle+'</h3><ul>';
+
+                    for (var notion in Revision.grammaire[title][subTitle]) {
+                        htmlForTable += '<li>'+notion+'<ul>';
+
+                        for (var i = 0; i < Revision.grammaire[title][subTitle][notion].length; i++) {
+                            htmlForTable += '<li>'+Revision.grammaire[title][subTitle][notion][i]+'</li>';
+                        }
+
+                        htmlForTable += '</ul></li>';
+                    }
+                    htmlForTable += '</ul>';
+                }
+            }
+            tableEl.innerHTML += htmlForTable;
+        </script>
+    </body>
+</html>

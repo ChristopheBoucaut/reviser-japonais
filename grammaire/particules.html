@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="../favicon.png" />
+        <title>Les particules</title>
+        <style media="screen">
+            #information {
+                text-align: center;
+            }
+
+            #information button {
+                margin-top: 7px;
+            }
+
+            #information:not(:empty) ~ div {
+                display: none;
+            }
+
+            #particules span {
+                display: inline-block;
+                margin: 4px 7px;
+                padding: 4px;
+                border: 1px solid black;
+                cursor: pointer;
+            }
+
+            .error {
+                background-color: red;
+            }
+        </style>
+
+        <script src="../js/utils.js" type="text/javascript"></script>
+        <script src="../js/data/grammaire.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <a href="./../index.html">&lt; Retour</a> <h1>Les particules</h1>
+
+        <div id="information"></div>
+
+        <div id="notion"></div>
+
+        <div id="particules"></div>
+
+        <script type="text/javascript">
+            var informationEl = document.getElementById('information');
+            var particulesEl = document.getElementById('particules');
+            var notionEl = document.getElementById('notion');
+
+            var particules = Object.keys(Revision.grammaire.particules);
+            for (var i = 0; i < particules.length; i++) {
+                particulesEl.innerHTML += '<span class="particule" onclick="selectParticule(this)">'+particules[i]+'</span>';
+            }
+
+
+            var notions = [];
+            for (var particule in Revision.grammaire.particules) {
+                for (var notion in Revision.grammaire.particules[particule]) {
+                    notions.push([notion, particule]);
+                }
+            }
+            notions = Revision.utils.shuffle(notions);
+
+            var currentNotion;
+
+            // Démarrage.
+            showNotion();
+
+            function showNotion() {
+                informationEl.innerHTML = '';
+
+                var errorEls = document.querySelectorAll('.error');
+                for (var i = 0; i < errorEls.length; i++) {
+                    errorEls[i].classList.remove('error');
+                }
+
+                if (notions.length) {
+                    currentNotion = notions.shift();
+                    notionEl.innerText = currentNotion[0];
+                } else {
+                    alert("Terminé.");
+                }
+            }
+
+            function selectParticule(el) {
+                if (!currentNotion) {
+                    return;
+                }
+
+                var particule = el.innerText;
+                if (currentNotion[1] == particule) {
+                    showInformations();
+                } else {
+                    el.classList.add('error');
+                }
+            }
+
+            function showInformations() {
+                var informationHtml = '';
+                for (var i = 0; i < Revision.grammaire.particules[currentNotion[1]][currentNotion[0]].length; i++) {
+                    informationHtml += '<div>'+Revision.grammaire.particules[currentNotion[1]][currentNotion[0]][i]+'</div>';
+                }
+                informationHtml += '<button onclick=showNotion()>Suite</button>';
+
+                informationEl.innerHTML = informationHtml;
+            }
+        </script>
+    </body>
+</html>
