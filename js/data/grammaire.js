@@ -94,6 +94,7 @@ Revision.grammaire = (function () {
             "を": {
                 "indiquer le COD": [
                     "qui subit l’action du verbe",
+                    "On va la prononcer comme お sous sa forme particule.",
                     "私はミルクを飲む。: Je bois du lait.",
                     "Le COD, comme en français, se trouve toujours au plus proche du verbe."
                 ],
@@ -135,6 +136,13 @@ Revision.grammaire = (function () {
                     "キリンは角がある。: La girafe a des cornes.",
                     "私は妹がいる。: J’ai une petite soeur."
                 ]
+            },
+            "も": {
+                "introduire dans une phrase, une chose identique à une autre précédemment énoncée": [
+                    "équivaut au “aussi”, “de même”, etc.",
+                    "レモンは果物だ。: Le citron est un fruit.",
+                    "レモンも果物だ。: Le citron aussi est un fruit."
+                ],
             }
         }
     };
