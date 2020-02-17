@@ -151,6 +151,7 @@
             function normalizeStringToSearch(s) {
                 // On supprime les espaces en trop.
                 s = s.replace(/\s+/g, ' ').toLowerCase();
+                s = s.replace(/’/g, '\'').toLowerCase();
                 if (s.normalize) {
                     // Si le navigateur gère la méthode, on supprime les accents pour garder la version de base du caractère.
                     // Cf : https://stackoverflow.com/a/37511463
