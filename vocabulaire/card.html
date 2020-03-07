@@ -29,6 +29,10 @@
                 border: 2px solid grey;
                 position: relative;
             }
+            
+            #board:fullscreen {
+                background-color: white;
+            }
 
             #board > div#ask {
                 font-size: 16vw;
@@ -306,7 +310,7 @@
              * Passage en fullscreen.
              */
             function fullscreen() {
-                document.documentElement.requestFullscreen();
+                boardEl.requestFullscreen();
             }
 
             /**
