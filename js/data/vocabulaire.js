@@ -535,6 +535,11 @@ Revision.wordsGroup = (function () {
             ["塗る", "ぬる", "Appliquer / peindre"],
             ["残る", "のこる", "Rester (présence)"],
             ["出る", "でる", "sortir"],
+            ["閉める", "しめる", "fermer"],
+            ["洗う", "あらう", "laver"],
+            ["習う", "ならう", "apprendre"],
+            ["選ぶ", "えらぶ", "choisir"],
+            ["なでる", "なでる", "caresser"],
         ],
         "Le corps humain": [
             ["人体の単語", "ジンタイのタンゴ", "Le corps humain"],
@@ -564,7 +569,7 @@ Revision.wordsGroup = (function () {
             ["誕生", "タンジョウ", "la naissance"],
             ["人間", "ニンゲン", "l’être humain"],
             ["傷", "きず", "blessure"],
-            ["洗う", "あらう", "laver"],
+            ["具合", "グあい", "la santé"],
         ],
         "Les moyens de transport": [
             ["乗り物の単語", "のりもののタンゴ", "les moyens de transport"],
@@ -870,6 +875,8 @@ Revision.wordsGroup = (function () {
             ["もちろん", "もちろん", "bien sûr"],
             ["本当に", "ホントウに", "vraiment"],
             ["やはり", "やはり", "après tout"],
+            ["やっぱり", "やっぱり", "après tout"],
+            ["一体", "イッタイ", "à la fin (renforcer une question)"],
         ],
         "Les appareils électroménagers": [
             ["家電機器の単語", "カデンキキのタンゴ", "Les appareils électroménagers"],
@@ -932,6 +939,9 @@ Revision.wordsGroup = (function () {
             ["煙", "けむり", "la fumée"],
             ["冗談", "ジョウダン", "la blague"],
             ["秘密", "ヒミツ", "le secret"],
+            ["様", "さま", "sama"],
+            ["危険", "キケン", "le danger"],
+            ["リズム", "リズム", "le rythme"],
         ],
 
     };
