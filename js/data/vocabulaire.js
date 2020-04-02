@@ -635,6 +635,8 @@ Revision.wordsGroup = (function () {
             ["日本酒", "ニホンシュ", "le saké"],
             ["林檎", "リンゴ", "la pomme"],
             ["蜂蜜", "はちミツ", "le miel"],
+            ["人参", "ニンジン", "la carotte"],
+            ["フランスパン", "フランスパン", "la baguette de pain"],
         ],
         "Les repères temporels": [
             ["時間の単語", "ジカンのタンゴ", "Les repères temporels"],
@@ -775,7 +777,7 @@ Revision.wordsGroup = (function () {
             ["蜘蛛", "くも", "l’araignée"],
             ["蠍", "さそり", "le scorpion"],
             ["黄金虫", "こがねむし", "le scarabé"],
-            ["天道虫", "テントウむし", "la coccinelle"],
+            ["天道虫", "テントウムシ", "la coccinelle"],
             ["毛虫", "けむし", "la chenille"],
             ["蝸牛", "かたつむり", "l’escargot"],
             ["蛞蝓", "なめくじ", "la limace"],
@@ -877,6 +879,8 @@ Revision.wordsGroup = (function () {
             ["やはり", "やはり", "après tout"],
             ["やっぱり", "やっぱり", "après tout"],
             ["一体", "イッタイ", "à la fin (renforcer une question)"],
+            ["ほぼ", "ほぼ", "presque"],
+            ["約", "ヤク", "environ"],
         ],
         "Les appareils électroménagers": [
             ["家電機器の単語", "カデンキキのタンゴ", "Les appareils électroménagers"],
@@ -917,7 +921,6 @@ Revision.wordsGroup = (function () {
             ["林", "はやし", "Plusieurs arbres / petite foret"],
             ["森", "もり", "forêt"],
             ["友達", "ともだち", "ami"],
-            ["東京", "とうきょう", "Tokyo"],
             ["電話", "デンワ", "téléphone"],
             ["湖", "みずうみ", "le lac"],
             ["都", "みやこ", "la capitale"],
@@ -942,6 +945,9 @@ Revision.wordsGroup = (function () {
             ["様", "さま", "sama"],
             ["危険", "キケン", "le danger"],
             ["リズム", "リズム", "le rythme"],
+            ["辞書", "ジショ", "le dictionnaire"],
+            ["手紙", "てがみ", "la lettre papier"],
+            ["敵", "テキ", "l’ennemi"],
         ],
 
     };
