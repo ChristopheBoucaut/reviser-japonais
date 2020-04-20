@@ -112,6 +112,16 @@ var wordsGroup = {
         ["十分", "ジュップン", "10 min"],
         ["秒", "ビョウ", "seconde"],
     ],
+    "Exprimer une durée": [
+        ["秒(間)", "ビョウ(カン)", "durée en seconde"],
+        ["分(間)", "プン(カン)", "durée en minute"],
+        ["時間", "ジカン", "durée en heure"],
+        ["一日", "イチニチ", "une journée"],
+        ["日間", "カカン / ニチカカン", "durée en journées"],
+        ["週間", "シュウカン", "durée en semaine"],
+        ["ヶ月", "カゲツ", "durée en mois"],
+        ["年(間)", "ネン(カン)", "durée en année"],
+    ],
 };
 document.querySelectorAll('h1').forEach(function (el) {
     wordsGroup[el.innerText] = [];
