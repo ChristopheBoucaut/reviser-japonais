@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="../favicon.png" />
+        <title>Lecture des kana</title>
+        <style media="screen">
+            body {
+                height: 100vh;
+                margin: 0;
+                display: grid;
+                grid-template-rows: auto auto 1fr;
+            }
+
+            #utils h1 {
+                display: inline-block;
+                margin-right: 14px;
+            }
+
+            #board {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 2fr auto auto auto;
+                grid-template-areas:
+                    "a a"
+                    "i i";
+                text-align: center;
+                align-items: center;
+                border: 2px solid grey;
+                position: relative;
+            }
+
+            #board:fullscreen {
+                background-color: white;
+            }
+
+            #board > div#ask {
+                font-size: 16vw;
+                grid-area: a;
+            }
+
+            #board > div#ask + div {
+                grid-area: i;
+                border: 2px solid grey;
+                background-color: red;
+                color: white;
+                font-weight: bold;
+            }
+
+            #board > div.answer {
+                font-size: 8vw;
+                border: 2px solid grey;
+                cursor: pointer;
+                height: 100%;
+                padding: 0;
+            }
+
+            #score-good-answer,
+            #score-bad-answer {
+                padding: 4px;
+                color: white;
+                font-weight: bold;
+                position: absolute;
+                top: 0;
+            }
+
+            #score-good-answer {
+                background-color: green;
+                left: 0;
+            }
+
+            #score-bad-answer {
+                background-color: red;
+                right: 0;
+            }
+
+            #board.show-good-answer > div#ask > div:nth-child(1) {
+                font-size: 8vw;
+            }
+
+            #board.show-good-answer > div#ask > div:nth-child(2) {
+                font-size: 6vw;
+            }
+
+            #board.show-good-answer > div#ask > div:nth-child(3) {
+                font-size: 4vw;
+            }
+
+            #board.show-good-answer > div#ask button {
+                font-size: 16px;
+            }
+
+            #board.show-good-answer > div.answer {
+                display: none;
+            }
+        </style>
+
+        <script src="../js/utils.js" type="text/javascript"></script>
+        <script src="../js/data/kana.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <a href="./../index.html">&lt; Retour</a>
+
+        <div id="utils">
+            <h1>Lecture des kana</h1>
+            <select onchange="restrict()">
+                <option value="">Tout</option>
+            </select>
+
+            <input type="checkbox" id="reverse-ask" onchange="restrict()" />
+            <label for="reverse-ask">Inverser</label>
+
+            <button onclick="toggleFullscreen()">toggleFullscreens</button>
+        </div>
+
+        <div id="board">
+            <div id="ask"></div>
+            <div></div>
+
+            <div class="answer" onclick="submitAnswer(this)"></div>
+            <div class="answer" onclick="submitAnswer(this)"></div>
+            <div class="answer" onclick="submitAnswer(this)"></div>
+            <div class="answer" onclick="submitAnswer(this)"></div>
+
+            <span id="score-good-answer">0</span>
+            <span id="score-bad-answer">0</span>
+        </div>
+
+        <script type="text/javascript">
+            var switchEl = document.querySelector('select');
+            for (var syllabaireName in Revision.kana) {
+                switchEl.innerHTML += '<option value="'+syllabaireName+'">'+syllabaireName+'</option>';
+            }
+
+            // On récupère les éléments HTML récurrents pour le jeu.
+            var reverseAskEl = document.querySelector('#reverse-ask');
+            var boardEl = document.querySelector('#board');
+            var askEl = document.querySelector('#board div#ask');
+            var infoEl = document.querySelector('#board > div#ask + div');
+            var answersEls = document.querySelectorAll('#board div.answer');
+            var scoreGoodAnswerEl = document.querySelector('#score-good-answer');
+            var scoreBadAnswerEl = document.querySelector('#score-bad-answer');
+
+            // Les questions que l'on peut poser.
+            var asks = [];
+            // La position dans les questions.
+            var currentWord = 0;
+            // La bonne réponse.
+            var goodAnwser;
+            // Les réponses affichées.
+            var answers = [];
+            // Le score.
+            var scoreGoodAnswer = 0;
+            var scoreBadAnswer = 0;
+
+            // On prepare les données.
+            prepareData();
+
+            // Démarre le plateau.
+            prepareBoard();
+
+            /**
+             * Détermine la bonne réponse, les réponses proposées en même temps et rempli le plateau avec.
+             */
+            function prepareBoard() {
+                goodAnwser = asks[currentWord];
+                currentWord++;
+                if (currentWord >= asks.length) {
+                    // On est à la fin, on remélange et repart de 0.
+                    prepareData();
+                }
+
+                // On trouve les 3 autres réponses à proposer.
+                answers = [goodAnwser];
+                while (answers.length < 4) {
+                    var answer = asks[Revision.utils.random(asks.length)];
+                    if (answers.indexOf(answer) != -1) {
+                        continue;
+                    }
+
+                    answers.push(answer);
+                }
+
+                askEl.innerHTML = goodAnwser[0];
+                showAnswers();
+            }
+
+            /**
+             * Randomise les réponses et les affiches pour le mode courant.
+             */
+            function showAnswers() {
+                answers = Revision.utils.shuffle(answers);
+                answersEls.forEach(function (answerEl, i) {
+                    answerEl.innerHTML = answers[i][1];
+                });
+            }
+
+            /**
+             * Vérifie la bonne ou mauvaise réponse de l'utilisateur et passe à la suite.
+             *
+             * @param {Object} el L'élément où il a cliqué.
+             */
+            function submitAnswer(el) {
+                infoEl.innerHTML = '';
+
+                if (el.innerHTML != goodAnwser[1]) {
+                    scoreBadAnswer++;
+                    scoreBadAnswerEl.innerHTML = scoreBadAnswer;
+                    infoEl.innerHTML = "La bonne réponse était : "+goodAnwser[1];
+                } else {
+                    scoreGoodAnswer++;
+                    scoreGoodAnswerEl.innerHTML = scoreGoodAnswer;
+                }
+
+                prepareBoard();
+            }
+
+            /**
+             * Restreint à un thème donné.
+             */
+            function restrict() {
+                prepareData();
+                prepareBoard();
+            }
+
+            /**
+             * Melange et reset les compteurs nécessaire.
+             */
+            function prepareData() {
+                if (switchEl.value) {
+                    asks = Revision.kana[switchEl.value];
+                } else {
+                    asks = [];
+                    for (var syllabaireName in Revision.kana) {
+                        asks = asks.concat(Revision.kana[syllabaireName]);
+                    }
+                }
+
+                // On supprime les entrées vide.
+                asks = asks.filter(function (el) {
+                    return el.length > 0;
+                });
+
+                if (reverseAskEl.checked) {
+                    for (var i = 0; i < asks.length; i++) {
+                        asks[i] = asks[i].reverse();
+                    }
+                }
+
+                asks = Revision.utils.shuffle(asks);
+                currentWord = 0;
+            }
+
+            /**
+             * Permet de basculer le mode plein écran.
+             */
+            function toggleFullscreen() {
+                Revision.utils.toggleFullscreen(boardEl);
+            }
+        </script>
+    </body>
+</html>
