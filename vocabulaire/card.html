@@ -29,7 +29,7 @@
                 border: 2px solid grey;
                 position: relative;
             }
-            
+
             #board:fullscreen {
                 background-color: white;
             }
@@ -299,27 +299,7 @@
              * Permet de basculer le mode plein écran.
              */
             function toggleFullscreen() {
-                if (!document.fullscreen) {
-                    fullscreen();
-                } else {
-                    exitFullscreen();
-                }
-            }
-
-            /**
-             * Passage en fullscreen.
-             */
-            function fullscreen() {
-                boardEl.requestFullscreen();
-            }
-
-            /**
-             * Quitte le mode fullscreen.
-             */
-            function exitFullscreen() {
-                if (document.fullscreen) {
-                    document.exitFullscreen();
-                }
+                Revision.utils.toggleFullscreen(boardEl);
             }
         </script>
     </body>

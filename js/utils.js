@@ -56,6 +56,37 @@ Revision.utils = (function () {
             }
 
             return words;
+        },
+
+        /**
+         * Permet de basculer le mode plein écran.
+         *
+         * @param {Object} el
+         */
+        toggleFullscreen: function (el) {
+            if (!document.fullscreen) {
+                Revision.utils.fullscreen(el);
+            } else {
+                Revision.utils.exitFullscreen();
+            }
+        },
+
+        /**
+         * Passage en fullscreen.
+         *
+         * @param {Object} el
+         */
+        fullscreen: function (el) {
+            el.requestFullscreen();
+        },
+
+        /**
+         * Quitte le mode fullscreen.
+         */
+        exitFullscreen: function () {
+            if (document.fullscreen) {
+                document.exitFullscreen();
+            }
         }
     };
 })();
