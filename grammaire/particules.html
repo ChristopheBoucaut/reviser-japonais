@@ -5,21 +5,8 @@
         <link rel="icon" type="image/png" href="../favicon.png" />
         <title>Les particules</title>
         <style media="screen">
-            #information {
-                font-size: 3vw;
-                text-align: center;
-            }
-
-            #information button {
-                margin-top: 7px;
-            }
-
-            #information:not(:empty) ~ div {
-                display: none;
-            }
-
             #notion {
-                font-size: 3vw;
+                font-size: 2vw;
             }
 
             #particules span {
@@ -28,11 +15,34 @@
                 padding: 4px;
                 border: 1px solid black;
                 cursor: pointer;
-                font-size: 5vw;
+                font-size: 2vw;
+            }
+
+            .good {
+                background-color: green;
             }
 
             .error {
                 background-color: red;
+            }
+
+            #inputs-mode {
+                display: none;
+            }
+
+            #inputs-mode input[type="text"] {
+                font-size: 2vw;
+                vertical-align: middle;
+                display: block;
+                margin-bottom: 7px;
+            }
+
+            #toggle-mode:checked ~ #particules {
+                display: none;
+            }
+
+            #toggle-mode:checked ~ #inputs-mode {
+                display: block;
             }
         </style>
 
@@ -42,73 +52,138 @@
     <body>
         <a href="./../index.html">&lt; Retour</a> <h1>Les particules</h1>
 
-        <div id="information"></div>
+        <input type="checkbox" id="toggle-mode" onchange="toggleMode()" />
+        <label for="toggle-mode">Passer en mode "saisie libre"</label>
 
         <div id="notion"></div>
-
         <div id="particules"></div>
+        <form id="inputs-mode" onsubmit="return submitParticules()">
+            <input type="submit" />
+        </form>
 
         <script type="text/javascript">
-            var informationEl = document.getElementById('information');
-            var particulesEl = document.getElementById('particules');
+            var toggleModeEl = document.getElementById('toggle-mode');
             var notionEl = document.getElementById('notion');
+            var particulesEl = document.getElementById('particules');
+            var inputsModeEl = document.getElementById('inputs-mode');
 
-            var particules = Object.keys(Revision.grammaire.particules);
-            for (var i = 0; i < particules.length; i++) {
-                particulesEl.innerHTML += '<span class="particule" onclick="selectParticule(this)">'+particules[i]+'</span>';
-            }
+            // Les notions => particules.
+            var answers = {};
+            // Les questions (= notions) pour suffle.
+            var asks = [];
+            // La position (int) dans les questions.
+            var current;
 
-
-            var notions = [];
             for (var particule in Revision.grammaire.particules) {
-                for (var notion in Revision.grammaire.particules[particule]) {
-                    notions.push([notion, particule]);
+                for (var i = 0; i < Revision.grammaire.particules[particule].length; i++) {
+                    var answer = Revision.grammaire.particules[particule][i];
+                    if (!answers[answer]) {
+                        answers[answer] = [];
+                        asks.push(answer);
+                    }
+                    answers[Revision.grammaire.particules[particule][i]].push(particule);
                 }
-            }
-            notions = Revision.utils.shuffle(notions);
 
-            var currentNotion;
+                var particuleEl = document.createElement('span');
+                particuleEl.innerText = particule;
+                particuleEl.onclick = selectParticule;
+                particulesEl.append(particuleEl);
+            }
+
+            // On prépare les données.
+            prepareData();
 
             // Démarrage.
             showNotion();
 
+            /**
+             * Prépare les données pour les questions.
+             */
+            function prepareData() {
+                current = 0;
+                asks = Revision.utils.shuffle(asks);
+            }
+
+            /**
+             * Affiche la prochaine notion.
+             */
             function showNotion() {
-                informationEl.innerHTML = '';
-
-                var errorEls = document.querySelectorAll('.error');
-                for (var i = 0; i < errorEls.length; i++) {
-                    errorEls[i].classList.remove('error');
+                if (current >= asks.length) {
+                    // On est à la fin, on remélange et repart de 0.
+                    prepareData();
                 }
 
-                if (notions.length) {
-                    currentNotion = notions.shift();
-                    notionEl.innerText = currentNotion[0];
+                var resetEls = document.querySelectorAll('.error, .good');
+                for (var i = 0; i < resetEls.length; i++) {
+                    resetEls[i].classList.remove('error');
+                    resetEls[i].classList.remove('good');
+                }
+
+                notionEl.innerText = asks[current];
+
+                if (toggleModeEl.checked) {
+                    // On supprimer les inputs précédent et on met les nouveaux.
+                    var inputsEls = document.querySelectorAll('#inputs-mode input[type="text"]');
+                    for (var i = 0; i < inputsEls.length; i++) {
+                        inputsEls[i].remove();
+                    }
+
+                    for (var i = 0; i < answers[asks[current]].length; i++) {
+                        var inputEl = document.createElement('input');
+                        inputEl.type = 'text';
+                        inputEl.size = 10;
+                        inputsModeEl.prepend(inputEl);
+                    }
+                }
+
+                current++;
+            }
+
+            /**
+             * Appelée quand on sélectionne une particule.
+             */
+            function selectParticule() {
+                if (answers[notionEl.innerText].indexOf(this.innerText) != -1) {
+                    this.classList.add('good');
                 } else {
-                    alert("Terminé.");
+                    this.classList.add('error');
+                }
+
+                if (document.querySelectorAll('.good').length == answers[notionEl.innerText].length) {
+                    // On a tout trouvé, on passe à la suite.
+                    showNotion();
                 }
             }
 
-            function selectParticule(el) {
-                if (!currentNotion) {
-                    return;
+            /**
+             * Appelée quand on soumet les particules.
+             */
+            function submitParticules() {
+                var inputsEls = document.querySelectorAll('#inputs-mode input[type="text"]');
+                var hasError = false;
+                for (var i = 0; i < inputsEls.length; i++) {
+                    if (answers[notionEl.innerText].indexOf(inputsEls[i].value) != -1) {
+                        inputsEls[i].classList.add('good');
+                    } else {
+                        inputsEls[i].classList.add('error');
+                        hasError = true;
+                    }
                 }
 
-                var particule = el.innerText;
-                if (currentNotion[1] == particule) {
-                    showInformations();
-                } else {
-                    el.classList.add('error');
+                if (!hasError) {
+                    // On a tout trouvé, on passe à la suite.
+                    showNotion();
                 }
+
+                return false;
             }
 
-            function showInformations() {
-                var informationHtml = '';
-                for (var i = 0; i < Revision.grammaire.particules[currentNotion[1]][currentNotion[0]].length; i++) {
-                    informationHtml += '<div>'+Revision.grammaire.particules[currentNotion[1]][currentNotion[0]][i]+'</div>';
-                }
-                informationHtml += '<button onclick=showNotion()>Suite</button>';
-
-                informationEl.innerHTML = informationHtml;
+            /**
+             * On change de mode d'affichage.
+             */
+            function toggleMode() {
+                current--;
+                showNotion();
             }
         </script>
     </body>
