@@ -2,6 +2,7 @@
 <html lang="fr" dir="ltr">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
         <link rel="icon" type="image/png" href="../favicon.png" />
         <title>Tout le vocabulaire</title>
         <style media="screen">
@@ -9,6 +10,18 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr 1fr;
                 border: 1px solid #000;
+            }
+
+            @media (max-width: 800px) {
+                .group {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+
+            @media (max-width: 400px) {
+                .group {
+                    grid-template-columns: 1fr;
+                }
             }
 
             .group > div {
