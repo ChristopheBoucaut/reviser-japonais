@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+        <link rel="icon" type="image/png" href="../favicon.png" />
+        <title>Lier des phrases</title>
+        <style media="screen">
+            input.error {
+                background-color: red;
+            }
+
+            form {
+                display: inline-block;
+            }
+        </style>
+
+        <script src="../js/utils.js" type="text/javascript"></script>
+        <script src="../js/data/grammaire.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <a href="./../index.html">&lt; Retour</a> <h1>Lier des phrases</h1>
+
+        <p id="notion"></p>
+        <form onsubmit="return submitAnswer()">
+            <input type="text" name="answer" id="answer" autofocus />
+            <input type="submit" />
+        </form>
+        <button onclick="showAnswer()">Voir réponse</button>
+
+        <script type="text/javascript">
+            var notionEl = document.getElementById('notion');
+            var inputEl = document.getElementById('answer');
+
+            // Les questions pour suffle.
+            var asks = [];
+            // La position (int) dans les questions.
+            var current;
+
+            for (var lien in Revision.grammaire.lierPhrases) {
+                asks.push([lien, Revision.grammaire.lierPhrases[lien]]);
+            }
+
+            // On prépare les données.
+            prepareData();
+
+            // Démarrage.
+            showNotion();
+
+            /**
+             * Prépare les données pour les questions.
+             */
+            function prepareData() {
+                current = 0;
+                asks = Revision.utils.shuffle(asks);
+            }
+
+            /**
+             * Affiche la prochaine notion.
+             */
+            function showNotion() {
+                if (current >= asks.length) {
+                    // On est à la fin, on remélange et repart de 0.
+                    prepareData();
+                }
+
+                notionEl.innerText = asks[current][1][0];
+                inputEl.classList.remove('error');
+                inputEl.value = '';
+                current++;
+            }
+
+            /**
+             * Affiche les réponses.
+             */
+            function showAnswer() {
+                var ask = asks[current-1];
+                inputEl.value = ask[0];
+                if (ask[1].length > 1) {
+                    // On a des infos supplémentaires à afficher.
+                    notionEl.innerText = notionEl.innerText + " - prononciation : "+ask[1][1];
+                }
+            }
+
+            /**
+             * Appelée quand on soumet le formulaire.
+             */
+            function submitAnswer() {
+                if (asks[current-1][0] == inputEl.value) {
+                    // On a tout trouvé, on passe à la suite.
+                    showNotion();
+                } else {
+                    inputEl.classList.add('error');
+                }
+
+                return false;
+            }
+        </script>
+    </body>
+</html>

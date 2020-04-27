@@ -162,6 +162,18 @@ Revision.grammaire = (function () {
             "のか": [
                 "Tournure explicative : Placé en fin de phrase (juste après le verbe), elle permet de demander une explication.",
             ],
+        },
+        "lierPhrases": {
+            "そして": ["union (= et)"],
+            "その上": ["ajout (= de plus)", "そのうえ"],
+            "あるいは": ["choix (= ou bien)", "あるいわ"],
+            "しかし": ["opposition (= mais)"],
+            "逆に": ["propos inverse (= inversement)", "ギャクに"],
+            "それで": ["conséquence (= donc)"],
+            "ところで": ["changement de sujet (= au fait)"],
+            "つまり": ["résumé (= en un mot)"],
+            "実は": ["vérité (= à vrai dire)", "ジツわ"],
+            "一方": ["mise en parallèle (= d’autres part)", "イッポウ"],
         }
     };
 })();
