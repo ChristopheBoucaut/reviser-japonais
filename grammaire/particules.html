@@ -49,6 +49,7 @@
 
         <input type="checkbox" id="toggle-mode" onchange="toggleMode()" />
         <label for="toggle-mode">Passer en mode "saisie libre"</label>
+        <button onclick="showAnswer()">Voir réponse</button>
 
         <div id="notion"></div>
         <div id="particules"></div>
@@ -81,6 +82,7 @@
 
                 var particuleEl = document.createElement('span');
                 particuleEl.innerText = particule;
+                particuleEl.dataset.particule = particule;
                 particuleEl.onclick = selectParticule;
                 particulesEl.append(particuleEl);
             }
@@ -132,6 +134,20 @@
                 }
 
                 current++;
+            }
+
+            /**
+             * Affiche les réponses.
+             */
+            function showAnswer() {
+                for (var i = 0; i < answers[notionEl.innerText].length; i++) {
+                    var answer = answers[notionEl.innerText][i];
+                    if (toggleModeEl.checked) {
+                        document.querySelector('#inputs-mode input[type="text"]:nth-child('+(i+1)+')').value = answer;
+                    } else {
+                        document.querySelector('#particules span[data-particule="'+answer+'"]').classList.add('good');
+                    }
+                }
             }
 
             /**
