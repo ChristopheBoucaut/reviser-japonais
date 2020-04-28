@@ -6,10 +6,10 @@ Revision.grammaire = (function () {
             "の": [
                 "Particule de liaison : Elle permet d'exprimer la possession.",
                 "Particule de liaison : Elle permet de lier un objet/lieu avec un repère spatial.",
-                "Particule syntaxique : Elle permet d'exprimer la notion de “avec” si utilisée seule lorsqu'il s'agit d'un être vivant.",
             ],
             "と": [
                 "Particule de liaison : Elle permet d'exprimer l'énumération (équivalent du et en français). Il se place entre 2 noms (mais pas entre 2 adjectifs ou 2 verbes).",
+                "Particule syntaxique : Elle permet d'exprimer la notion de “avec” si utilisée seule lorsqu'il s'agit d'un être vivant.",
             ],
             "との": [
                 "Particule de liaison : Elle permet d'exprimer l'énumération quelqu'un et moi (avec).",
@@ -95,7 +95,7 @@ Revision.grammaire = (function () {
                 "Particule adverbiale : Elle permet d'exprimer une approximation dans le temps lorsque le point est fixe dans le temps.",
             ],
             "ほど": [
-                "Particule adverbiale : Elle permet d'exprimer une approximation dans une idée de comparaison.",
+                "Particule adverbiale : Elle permet d'exprimer une approximation dans une idée de comparaison (comme quelque chose).",
             ],
             "など": [
                 "Particule adverbiale : Elle permet d'exprimer la non-exhaustivité et ainsi d'appuyer l'utilisation de や.",
@@ -148,7 +148,7 @@ Revision.grammaire = (function () {
                 "Particule de fin de phrases : Elle permet d'indiquer une incertitude, de se questionner soi-même. C'est plus utilisé par les femmes.",
             ],
             "けれども": [
-                "Particule conjonctive : Elle permet d'exprimer la concession entre 2 propositions sous une douce.",
+                "Particule conjonctive : Elle permet d'exprimer la concession entre 2 propositions sous une forme douce.",
             ],
             "のに": [
                 "Particule conjonctive : Elle permet d'exprimer la concession entre 2 propositions dans un sens de surprise, regret ou mécontentement.",
