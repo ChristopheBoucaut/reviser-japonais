@@ -899,6 +899,7 @@ Revision.wordsGroup = (function () {
             ["やっぱり", "やっぱり", "après tout"],
             ["一体", "イッタイ", "à la fin (renforcer une question)"],
             ["ほぼ", "ほぼ", "presque"],
+            ["ほとんど", "ほとんど", "presque (avec nom)"],
             ["約", "ヤク", "environ"],
         ],
         "Les appareils électroménagers": [
@@ -956,6 +957,18 @@ Revision.wordsGroup = (function () {
             ["杯", "ハイ", "le contenu d’un verre, bol, cuillère, etc"],
             ["輪", "リン", "les roues et fleurs"],
             ["個", "コ", "classificateur par défaut"],
+        ],
+        "Les unités de mesure": [
+            ["階", "カイ", "étage"],
+            ["段", "ダン", "marche d’escalier; niveau, grade"],
+            ["話", "ワ", "histoire, épisode"],
+            ["泊", "ハク", "nuitée"],
+            ["歳", "サイ", "âge en années"],
+            ["代", "ダイ", "génération"],
+            ["番", "バン", "numéro / position dans une liste"],
+            ["倍", "バイ", "multiplicateur"],
+            ["回", "カイ", "occurrence que l’on connaît comme une fête annuelle"],
+            ["度", "ド", "occurrence; degré de température et des angles"],
         ],
         "Liste personnelle": [
             ["祭", "まつり", "le festival"],
